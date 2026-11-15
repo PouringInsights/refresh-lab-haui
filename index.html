@@ -1,0 +1,947 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RE-FRESH Lab · Phòng thí nghiệm tái sinh sản phẩm</title>
+<meta name="description" content="Bài 8 · Chính sách sản phẩm · Product Canvas tái sinh sản phẩm FreshUp (Dữ liệu giả lập)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800&display=swap">
+<style>
+:root{
+  --navy:#0A2463; --navy2:#1B3A7A; --yellow:#FFC72C; --yellow-soft:#FFF4D1;
+  --ink:#14213D; --muted:#4A5568; --line:#D5DBE5; --bg:#F3F5F9; --card:#FFFFFF;
+  --ok:#1E7B3A; --warn:#9A5B00; --bad:#B42318;
+  --font:"Be Vietnam Pro", system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+*{box-sizing:border-box}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+@media (min-width:1600px){html{font-size:19px}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.5;overflow-x:hidden}
+header.top{background:var(--navy);color:#fff;padding:14px 16px 0;border-bottom:5px solid var(--yellow)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+header.top .wrap{padding:0}
+.kicker{font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--yellow);font-weight:700}
+h1{margin:2px 0 4px;font-size:clamp(1.3rem,4.4vw,2.2rem);line-height:1.2;font-weight:800}
+h1 .lab{color:var(--yellow)}
+.sub{margin:0 0 12px;color:#DCE3F2;font-size:.95rem}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding-bottom:12px}
+.toolbar label{font-weight:700;font-size:.95rem}
+.toolbar input{width:5.5em;min-height:44px;font-size:1.1rem;font-weight:700;text-align:center;border-radius:8px;border:2px solid var(--yellow);padding:4px 8px;font-family:inherit}
+.btn{min-height:44px;padding:10px 16px;border-radius:10px;border:2px solid var(--navy);background:#fff;color:var(--navy);font:inherit;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;text-align:left}
+.btn:hover{background:#EEF2FA}
+.btn.primary{background:var(--navy);color:#fff}
+.btn.primary:hover{background:var(--navy2)}
+.btn.yellow{background:var(--yellow);border-color:var(--yellow);color:var(--navy)}
+.btn.ghost-light{background:transparent;border-color:#fff;color:#fff}
+.btn.ghost-light:hover{background:rgba(255,255,255,.12)}
+.btn:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+nav.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:16px 0}
+nav.steps button{min-height:56px;border:2px solid var(--line);background:#fff;border-radius:12px;font:inherit;font-weight:700;color:var(--muted);cursor:pointer;padding:6px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;line-height:1.2;font-size:.85rem}
+nav.steps button .n{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--line);color:var(--ink);font-size:.95rem}
+nav.steps button[aria-selected="true"]{border-color:var(--navy);color:var(--navy);background:#EEF2FA}
+nav.steps button[aria-selected="true"] .n{background:var(--navy);color:#fff}
+@media (min-width:700px){nav.steps button{flex-direction:row;font-size:1rem}}
+.panel{display:none}
+.panel.active{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+.card h2{margin:0 0 6px;font-size:1.25rem;color:var(--navy)}
+.card h3{margin:14px 0 6px;font-size:1.05rem;color:var(--navy)}
+.lead{margin:0 0 10px;color:var(--muted)}
+.rule{background:var(--yellow-soft);border-left:6px solid var(--yellow);padding:10px 14px;border-radius:8px;margin:0 0 14px;font-weight:600}
+.field{margin-bottom:12px}
+.field label,.field .lbl{display:block;font-weight:700;margin-bottom:4px}
+.field small{display:block;color:var(--muted);font-weight:400}
+input[type=text],textarea,select{width:100%;min-height:44px;padding:10px 12px;border:2px solid var(--line);border-radius:10px;font:inherit;color:var(--ink);background:#fff}
+textarea{min-height:76px;resize:vertical}
+textarea.old{background:#F6F8FC;color:var(--muted);min-height:64px}
+.row2{display:grid;grid-template-columns:1fr;gap:0 14px}
+@media (min-width:560px){.row2{grid-template-columns:1fr 1fr}}
+.row3{display:grid;grid-template-columns:1fr;gap:0 10px}
+@media (min-width:700px){.row3{grid-template-columns:1fr 1fr 1fr}}
+.grid1{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;align-items:start}
+.grid1>div{min-width:0}
+@media (min-width:960px){.grid1{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr)}.sticky{position:sticky;top:12px}}
+.pick{display:grid;grid-template-columns:1fr;gap:8px}
+@media (min-width:560px){.pick{grid-template-columns:1fr 1fr}}
+.pick button{min-height:64px;text-align:left;border:2px solid var(--line);border-radius:12px;background:#fff;padding:10px 12px;font:inherit;cursor:pointer;color:var(--ink)}
+.pick button b{display:block;color:var(--navy)}
+.pick button small{color:var(--muted)}
+.pick button[aria-pressed="true"]{border-color:var(--navy);background:#EEF2FA;box-shadow:inset 6px 0 0 var(--yellow)}
+.dossier{border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:12px;background:#FBFCFE}
+.badge{display:inline-block;background:var(--yellow);color:var(--navy);font-weight:800;font-size:.78rem;padding:2px 8px;border-radius:6px}
+.tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:8px 0}
+table.data{border-collapse:collapse;width:100%;min-width:480px;font-size:.9rem}
+table.data th,table.data td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+table.data th{background:var(--navy);color:#fff}
+table.data td:first-child{font-weight:700;background:#EEF2FA}
+.voc{margin:8px 0;padding-left:18px}
+.voc li{margin-bottom:6px}
+.q{font-style:italic;color:var(--navy);font-weight:600}
+.radios{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+@media (min-width:700px){.radios{grid-template-columns:repeat(4,1fr)}}
+.radios label{display:flex;gap:8px;align-items:center;min-height:48px;padding:8px 10px;border:2px solid var(--line);border-radius:10px;cursor:pointer;font-weight:700}
+.radios input{width:20px;height:20px;accent-color:var(--navy)}
+.lvl{border:1px solid var(--line);border-left:5px solid var(--navy);border-radius:10px;padding:10px 12px;margin-bottom:10px}
+.lvl h3{margin:0 0 6px!important}
+.lvl h3 small{font-weight:400;color:var(--muted)}
+.swatches{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:6px}
+.sw{width:44px;height:44px;border-radius:10px;border:2px solid var(--line);cursor:pointer;padding:0}
+.sw[aria-pressed="true"]{outline:3px solid var(--navy);outline-offset:2px}
+input[type=color]{width:56px;height:44px;border:2px solid var(--line);border-radius:10px;padding:2px;background:#fff;cursor:pointer}
+.checks label{display:flex;gap:10px;align-items:flex-start;padding:10px;border:1px solid var(--line);border-radius:10px;margin-bottom:6px;cursor:pointer;font-weight:600}
+.checks input{width:22px;height:22px;margin-top:2px;flex:none;accent-color:var(--navy)}
+.checks .pts{margin-left:auto;color:var(--muted);font-weight:700;white-space:nowrap}
+.preview svg{width:100%;max-width:300px;height:auto;display:block;margin:0 auto}
+.preview img{width:100%;max-width:360px;display:block;margin:0 auto;border-radius:10px}
+.meter{height:18px;background:#E6EAF2;border-radius:999px;overflow:hidden;margin:6px 0}
+.meter>div{height:100%;background:linear-gradient(90deg,#E07A5F,#FFC72C,#2E9E5B);width:0;transition:width .3s}
+.meter-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.meter-top b{font-size:1.6rem;color:var(--navy)}
+.breakdown{margin:6px 0 0;padding-left:18px;font-size:.92rem;color:var(--muted)}
+.alerts{list-style:none;margin:8px 0 0;padding:0}
+.alerts li{border:1px solid #F1C27D;background:#FFF8EC;border-left:6px solid var(--warn);padding:8px 12px;border-radius:8px;margin-bottom:6px;font-size:.95rem}
+.alerts li b{color:#7A4500}
+.alerts li.clear{border-color:#B7DEC4;background:#EFFAF2;border-left-color:var(--ok)}
+.note{font-size:.88rem;color:var(--muted)}
+.prompt{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:14px;background:#fff}
+.prompt h3{margin-top:0}
+.prompt pre{white-space:pre-wrap;word-wrap:break-word;background:#F6F8FC;border:1px solid var(--line);border-radius:8px;padding:12px;font-family:var(--font);font-size:.92rem;margin:8px 0;max-height:340px;overflow:auto}
+.copied{color:var(--ok);font-weight:700;margin-left:8px}
+.must{border:3px solid var(--yellow);background:var(--yellow-soft);border-radius:12px;padding:12px}
+.must label{color:var(--navy)}
+.must .req{background:var(--navy);color:var(--yellow);font-size:.75rem;padding:2px 8px;border-radius:6px;margin-left:6px;vertical-align:middle}
+.missing{color:var(--bad);font-weight:700}
+.sample-bar{display:none;background:var(--yellow);color:var(--navy);font-weight:800;padding:8px 16px;text-align:center}
+body.is-sample .sample-bar{display:block}
+details.guide{background:#fff;border:1px solid var(--line);border-radius:14px;margin:0 0 14px}
+details.guide summary{cursor:pointer;padding:14px 16px;font-weight:800;color:var(--navy);min-height:44px}
+details.guide .in{padding:0 16px 14px}
+details.guide table{border-collapse:collapse;width:100%;font-size:.95rem}
+details.guide td,details.guide th{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+details.guide th{background:#EEF2FA}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.nextbar{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin:6px 0 24px}
+footer.foot{color:var(--muted);font-size:.85rem;text-align:center;padding:10px 16px 30px}
+
+/* Poster */
+.poster{background:#fff;border:2px solid var(--navy);border-radius:14px;overflow:hidden;color:var(--ink)}
+.p-head{background:var(--navy);color:#fff;padding:10px 18px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;border-bottom:5px solid var(--yellow);font-weight:700}
+.p-head .grp{color:var(--yellow);font-size:1.15em}
+.timer{display:flex;align-items:center;gap:8px}
+.timer output{font-variant-numeric:tabular-nums;font-size:1.4em;font-weight:800;color:var(--yellow);min-width:3.2em;text-align:right}
+.timer .btn{min-height:40px;padding:6px 12px;background:var(--yellow);border-color:var(--yellow);color:var(--navy)}
+.timer.over output{color:#FF8A80}
+.p-body{display:grid;grid-template-columns:1fr;gap:16px;padding:16px 18px}
+@media (min-width:760px){.p-body{grid-template-columns:minmax(0,.85fr) minmax(0,1.4fr)}}
+.p-visual{text-align:center}
+.p-visual svg{width:100%;max-width:280px;height:auto}
+.p-visual img{width:100%;max-width:380px;border-radius:10px}
+.p-name{font-size:clamp(1.5rem,4vw,2.5rem);font-weight:800;color:var(--navy);line-height:1.1;margin:8px 0 2px}
+.p-slogan{font-size:1.1rem;font-style:italic;margin:0 0 6px}
+.p-badge{display:inline-block;background:var(--yellow);color:var(--navy);font-weight:800;font-size:.8rem;padding:3px 10px;border-radius:6px;margin:2px}
+.p-diag{background:#EEF2FA;border-radius:8px;padding:8px 10px;margin-bottom:10px}
+.p-tbl{width:100%;border-collapse:collapse;font-size:.92rem}
+.p-tbl th,.p-tbl td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.p-tbl th{background:var(--navy);color:#fff}
+.p-tbl td:first-child{font-weight:700;color:var(--navy);width:22%}
+.p-tbl td:nth-child(2){color:var(--muted);width:30%}
+.p-sus{margin-top:10px;border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.p-pitch{margin-top:10px;border:2px solid var(--yellow);border-radius:10px;padding:8px 12px;background:var(--yellow-soft)}
+.p-pitch ol{margin:4px 0 0;padding-left:20px}
+.p-dec{margin-top:10px;display:grid;gap:8px}
+.p-dec div{padding:8px 10px;border-radius:8px;background:#EFFAF2;border-left:5px solid var(--ok)}
+.p-dec div.key{background:var(--yellow-soft);border-left-color:var(--yellow)}
+.p-dec b,.p-pitch b{color:var(--navy)}
+.p-foot{padding:8px 18px;border-top:1px solid var(--line);font-size:.85rem;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+#poster:fullscreen{overflow:auto;border:none;border-radius:0;font-size:1.15rem}
+#poster:fullscreen .p-body{grid-template-columns:minmax(0,.85fr) minmax(0,1.4fr)}
+#poster:fullscreen .p-visual svg,#poster:fullscreen .p-visual img{max-width:420px}
+#poster:fullscreen .timer output{font-size:2.4em}
+#poster::backdrop{background:#fff}
+
+.who{font-weight:800;color:var(--yellow);font-size:1.05rem}
+.sync{display:inline-block;padding:6px 10px;border-radius:999px;font-weight:700;font-size:.85rem;background:#fff;color:var(--navy)}
+.sync.ok{background:#D7F5E1;color:#145A2A}.sync.busy{background:var(--yellow-soft);color:#6B4A00}.sync.off{background:#FDE2E0;color:#8A1C12}
+.ph{margin:6px 0 4px}
+.ph .phb{display:flex;flex-wrap:wrap;gap:8px}
+.ph .phb label{cursor:pointer}
+.ph input[type=file]{position:absolute;width:1px;height:1px;opacity:0}
+.thumbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.thumbs figure{margin:0;width:110px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;font-size:.75rem}
+.thumbs img{width:100%;height:90px;object-fit:cover;display:block}
+.thumbs figcaption{padding:3px 5px;display:flex;justify-content:space-between;align-items:center;gap:4px}
+.thumbs figcaption b{color:var(--navy)}
+.thumbs button{border:0;background:none;color:var(--bad);font:inherit;font-weight:700;cursor:pointer;min-height:32px;padding:0 4px}
+.thumbs .pend{opacity:.55}
+.p-tbl .mini{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap}
+.p-tbl .mini img{width:56px;height:44px;object-fit:cover;border-radius:4px}
+.p-strip{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:6px}
+.p-strip img{width:64px;height:52px;object-fit:cover;border-radius:6px}
+.p-cap{display:inline-block;background:var(--navy);color:#fff;font-size:.75rem;font-weight:700;padding:2px 8px;border-radius:6px;margin-top:4px}
+.gate{position:fixed;inset:0;background:rgba(10,36,99,.96);color:#fff;z-index:50;display:none;overflow:auto;padding:24px 16px}
+.gate.show{display:block}
+.gate .box{max-width:560px;margin:0 auto}
+.gate h2{color:var(--yellow);margin:0 0 8px}
+.gate .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}
+.gate .grid button{min-height:56px;font:inherit;font-size:1.3rem;font-weight:800;border-radius:10px;border:2px solid #fff;background:#fff;color:var(--navy);cursor:pointer}
+.gate .grid button.taken{background:#C9D3E8}
+.gate input{min-height:48px;font-size:1.2rem;text-transform:uppercase}
+@media print{
+  @page{size:A4 landscape;margin:8mm}
+  body{background:#fff;font-size:9.5pt}
+  header.top,nav.steps,.no-print,details.guide,.panel:not(#step4),footer.foot,.sample-bar,.timer{display:none!important}
+  #step4{display:block!important}
+  .wrap{max-width:none;padding:0}
+  .poster{border-width:1.5px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .poster *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .p-body{grid-template-columns:.8fr 1.5fr!important;padding:8px 12px;gap:10px}
+  .p-visual svg{max-width:190px}
+  .p-visual img{max-width:240px}
+  .p-name{font-size:20pt}
+  .p-tbl{font-size:8.5pt}
+}
+</style>
+</head>
+<body>
+<div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gateT"><div class="box">
+  <h2 id="gateT">RE-FRESH Lab</h2>
+  <div id="gateCode">
+    <p>Nhập mã lớp giảng viên chiếu trên màn hình (hoặc quét mã QR).</p>
+    <div class="field"><label for="codeIn">Mã lớp</label><input type="text" id="codeIn" autocomplete="off" maxlength="20"></div>
+    <div class="actions"><button class="btn yellow" id="codeGo" type="button">Vào lớp</button><button class="btn ghost-light" id="codeOff" type="button">Làm ngoại tuyến (không lưu lên lớp)</button></div>
+  </div>
+  <div id="gateGroup">
+    <p>Lớp <b id="gateLop"></b>. Chọn <b>số nhóm</b> của em (chỉ chọn một lần; ô xám là nhóm đã có bài).</p>
+    <div class="grid" id="gateGrid"></div>
+  </div>
+</div></div>
+<div class="sample-bar" role="status">VÍ DỤ MẪU (nhóm mẫu) · chỉ để giảng viên minh họa. Nhóm của em hãy bấm “Làm lại” rồi tự làm.</div>
+<header class="top">
+  <div class="wrap">
+    <div class="kicker">Marketing căn bản · Bài 8 · Chính sách sản phẩm · Product Canvas</div>
+    <h1><span class="lab">RE-FRESH Lab</span> · Phòng thí nghiệm tái sinh sản phẩm</h1>
+    <p class="sub">Dự án “RE-FRESH 2026” của Công ty CP Nước giải khát FreshUp (Dữ liệu giả lập). Nhóm nghĩ trước, AI đến sau.</p>
+    <div class="toolbar">
+      <span class="who" id="who"></span>
+      <span class="sync" id="sync" role="status" aria-live="polite"></span>
+      <button class="btn ghost-light" id="btnGroup" type="button">Đổi nhóm</button>
+      <button class="btn ghost-light" id="btnSample" type="button">Ví dụ mẫu</button>
+      <button class="btn ghost-light" id="btnReset2" type="button">Làm lại</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <nav class="steps" role="tablist" aria-label="Các bước">
+    <button role="tab" data-step="1" aria-selected="true"><span class="n">1</span><span>Canvas của nhóm</span></button>
+    <button role="tab" data-step="2" aria-selected="false"><span class="n">2</span><span>Hỏi AI</span></button>
+    <button role="tab" data-step="3" aria-selected="false"><span class="n">3</span><span>Nhóm quyết định</span></button>
+    <button role="tab" data-step="4" aria-selected="false"><span class="n">4</span><span>Poster 90 giây</span></button>
+  </nav>
+
+  <details class="guide no-print">
+    <summary>Hướng dẫn giảng viên</summary>
+    <div class="in">
+      <table>
+        <tr><th>Phút</th><th>Việc</th></tr>
+        <tr><td>0–6</td><td><b>Tự nghĩ, không dùng AI.</b> Bước 1: chọn 1 trong 4 sản phẩm, đọc hồ sơ, chẩn đoán giai đoạn PLC và nỗi đau, điền cột “Ý tưởng cải tiến mới”. Điện thoại AI úp xuống.</td></tr>
+        <tr><td>6–14</td><td><b>Hỏi AI.</b> Bước 2: sao chép 3 câu lệnh có sẵn, dán vào công cụ AI miễn phí. Ghi lại điều đáng chú ý.</td></tr>
+        <tr><td>14–18</td><td><b>Nhóm quyết định.</b> Bước 3: bắt buộc ghi ít nhất một điểm nhóm <i>không</i> làm theo AI và lý do; tải ảnh bao bì AI (nếu có).</td></tr>
+        <tr><td>18–20</td><td><b>Poster.</b> Bước 4: chiếu toàn màn hình hoặc in; đại diện nhóm thuyết minh 90 giây theo đồng hồ đếm ngược.</td></tr>
+      </table>
+      <h3>Khi sinh viên không có thiết bị</h3>
+      <p>Nhóm điền Product Canvas bằng giấy. Giảng viên nhập canvas của 1–2 nhóm vào trang này trên máy chiếu, bấm “Sao chép” và chạy câu lệnh hộ cả lớp; các nhóm còn lại ghi quyết định ở Phần 4 trên phiếu.</p>
+      <h3>Dùng AI có trách nhiệm</h3>
+      <ul>
+        <li>Ý tưởng là của nhóm; AI chỉ phản hồi và dựng hình minh họa. Trang này không gợi ý ý tưởng.</li>
+        <li>AI có thể bịa số liệu: mọi con số AI đưa ra chỉ là phỏng đoán, phải kiểm chứng.</li>
+        <li>Không dùng logo, tên thương hiệu thật hay ảnh người thật. Hình AI phải ghi “Ảnh do AI tạo”.</li>
+        <li>Không nhập thông tin cá nhân vào công cụ AI. Dữ liệu trên trang chỉ lưu trong trình duyệt của máy này.</li>
+        <li>Điểm bền vững và cảnh báo “tẩy xanh” là quy tắc đơn giản để thảo luận, không phải kết luận.</li>
+      </ul>
+    </div>
+  </details>
+
+  <!-- STEP 1 -->
+  <section class="panel active" id="step1" role="tabpanel" aria-label="Bước 1">
+    <div class="grid1">
+      <div>
+        <div class="card">
+          <h2>Bước 1 · Product Canvas của nhóm</h2>
+          <p class="rule">Không dùng AI ở bước này. Viết bằng ý của nhóm, ngắn gọn.</p>
+          <div class="field"><span class="lbl" id="pickLbl">Sản phẩm được chọn cải tiến</span>
+            <div class="pick" id="pick" role="group" aria-labelledby="pickLbl"></div></div>
+          <div class="dossier" id="dossier"></div>
+        </div>
+
+        <div class="card">
+          <h2>Phần 1 · Chẩn đoán hiện trạng và giai đoạn PLC</h2>
+          <div class="field"><span class="lbl" id="plcLbl">1. Sản phẩm đang ở giai đoạn nào của chu kỳ sống?</span>
+            <div class="radios" role="radiogroup" aria-labelledby="plcLbl" id="plc"></div></div>
+          <div class="field"><label for="noidau">2. “Nỗi đau” lớn nhất của khách hàng hiện tại là gì?</label><textarea id="noidau" data-k="noidau"></textarea></div>
+        </div>
+
+        <div class="card">
+          <h2>Phần 2 · Cải tiến 3 cấp độ sản phẩm và 3 lớp bao bì</h2>
+          <p class="lead">Cột “Hiện trạng cũ” lấy từ hồ sơ (có thể sửa). Nhóm viết “Ý tưởng cải tiến mới”.</p>
+          <div class="lvl"><h3>1. Lợi ích cốt lõi <small>(khách hàng thực sự mua giải pháp gì?)</small></h3>
+            <div class="row2"><div class="field"><label for="o_cot">Hiện trạng cũ</label><textarea class="old" id="o_cot" data-k="o_cot"></textarea></div>
+            <div class="field"><label for="n_cot">Ý tưởng cải tiến mới</label><textarea id="n_cot" data-k="n_cot"></textarea></div></div></div>
+          <div class="lvl"><h3>2. Sản phẩm thực tế <small>(chất lượng, tính năng, kiểu dáng, nhãn hiệu)</small></h3>
+            <div class="row2"><div class="field"><label for="o_thuc">Hiện trạng cũ</label><textarea class="old" id="o_thuc" data-k="o_thuc"></textarea></div>
+            <div class="field"><label for="n_thuc">Ý tưởng cải tiến mới</label><textarea id="n_thuc" data-k="n_thuc"></textarea></div></div>
+            <div class="row2">
+              <div class="field"><label for="ten">Tên sản phẩm mới</label><input type="text" id="ten" data-k="ten" maxlength="40"></div>
+              <div class="field"><label for="thongdiep">Câu thông điệp</label><input type="text" id="thongdiep" data-k="thongdiep" maxlength="80"></div>
+            </div>
+            <div class="field"><span class="lbl" id="mauLbl">Màu chủ đạo</span><div class="swatches" role="group" aria-labelledby="mauLbl" id="swatches"></div></div></div>
+          <div class="lvl"><h3>3. Sản phẩm gia tăng <small>(dịch vụ hậu mãi, bảo hành, tiện ích đi kèm)</small></h3>
+            <div class="row2"><div class="field"><label for="o_gt">Hiện trạng cũ</label><textarea class="old" id="o_gt" data-k="o_gt"></textarea></div>
+            <div class="field"><label for="n_gt">Ý tưởng cải tiến mới</label><textarea id="n_gt" data-k="n_gt"></textarea></div></div></div>
+          <div class="lvl"><h3>4. Các lớp bao bì <small>(bao bì trong, bao bì ngoài, bao bì vận chuyển)</small></h3>
+            <div class="field"><label for="o_bb">Hiện trạng cũ</label><textarea class="old" id="o_bb" data-k="o_bb"></textarea></div>
+            <div class="field"><label for="chatlieu">Dạng bao bì trong (hình xem trước đổi theo)</label>
+              <select id="chatlieu" data-k="chatlieu">
+                <option value="goi">Gói / túi zip</option>
+                <option value="thuytinh">Chai thủy tinh</option>
+                <option value="thethao">Chai thể thao (nhựa)</option>
+                <option value="lon">Lon nhôm</option>
+                <option value="giay">Hộp giấy</option>
+              </select></div>
+            <div class="row3">
+              <div class="field"><label for="n_bb1">Bao bì trong (mới)</label><textarea id="n_bb1" data-k="n_bb1"></textarea></div>
+              <div class="field"><label for="n_bb2">Bao bì ngoài (mới)</label><textarea id="n_bb2" data-k="n_bb2"></textarea></div>
+              <div class="field"><label for="n_bb3">Bao bì vận chuyển (mới)</label><textarea id="n_bb3" data-k="n_bb3"></textarea></div>
+            </div></div>
+        </div>
+
+        <div class="card">
+          <h2>Cam kết bền vững</h2>
+          <div class="field"><label for="camket">Nhóm cam kết gì? (viết đúng điều làm được)</label><textarea id="camket" data-k="camket"></textarea></div>
+          <div class="checks" id="checks" role="group" aria-label="Việc nhóm cam kết làm"></div>
+          <div class="field"><label for="phutrach">Người phụ trách (ai làm việc gì)</label><input type="text" id="phutrach" data-k="phutrach"></div>
+        </div>
+      </div>
+      <div class="sticky">
+        <div class="card preview">
+          <h2>Xem trước bao bì</h2>
+          <div id="pv1"></div>
+        </div>
+        <div class="card">
+          <h2>Thước đo bền vững</h2>
+          <div class="meter-top"><span id="meterLabel">—</span><b id="meterScore">0</b></div>
+          <div class="meter" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="meterBar" aria-label="Điểm bền vững"><div id="meterFill"></div></div>
+          <ul class="breakdown" id="breakdown"></ul>
+          <p class="note">Điểm minh họa theo quy tắc đơn giản (dạng bao bì + các việc đã chọn), để thảo luận, không phải chứng nhận.</p>
+          <h3>Cảnh báo “tẩy xanh”</h3>
+          <ul class="alerts" id="alerts"></ul>
+          <p class="note">Công cụ dò từ ngữ, chỉ để nhóm tự kiểm tra lại, không phải phán xét.</p>
+        </div>
+      </div>
+    </div>
+    <div class="nextbar"><span></span><button class="btn primary" data-go="2" type="button">Sang Bước 2: Hỏi AI →</button></div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section class="panel" id="step2" role="tabpanel" aria-label="Bước 2">
+    <div class="card">
+      <h2>Bước 2 · Hỏi AI</h2>
+      <p class="rule">Ba câu lệnh dưới đây được ghép từ chính canvas của nhóm. Sao chép rồi dán vào Gemini, Copilot hoặc ChatGPT bản miễn phí.</p>
+      <p class="missing" id="emptyWarn"></p>
+      <div class="prompt"><h3>(a) Ba khách hàng giả định phản hồi ý tưởng</h3><pre id="pA"></pre><button class="btn primary" data-copy="pA" type="button">Sao chép</button><span class="copied" aria-live="polite"></span><p class="note">Dán vào Gemini, Copilot hoặc ChatGPT bản miễn phí.</p></div>
+      <div class="prompt"><h3>(b) Tạo hình bao bì mới (câu lệnh tiếng Anh cho kết quả tốt hơn)</h3><pre id="pB"></pre><button class="btn primary" data-copy="pB" type="button">Sao chép</button><span class="copied" aria-live="polite"></span><p class="note">Dán vào Gemini, Copilot hoặc ChatGPT bản miễn phí. Lưu ảnh về máy để tải lên ở Bước 3.</p></div>
+      <div class="prompt"><h3>(c) Kiểm tra “tẩy xanh” cho cam kết bền vững</h3><pre id="pC"></pre><button class="btn primary" data-copy="pC" type="button">Sao chép</button><span class="copied" aria-live="polite"></span><p class="note">Dán vào Gemini, Copilot hoặc ChatGPT bản miễn phí.</p></div>
+    </div>
+    <div class="nextbar"><button class="btn" data-go="1" type="button">← Bước 1</button><button class="btn primary" data-go="3" type="button">Sang Bước 3: Nhóm quyết định →</button></div>
+  </section>
+
+  <!-- STEP 3 -->
+  <section class="panel" id="step3" role="tabpanel" aria-label="Bước 3">
+    <div class="card">
+      <h2>Bước 3 · Nhóm quyết định</h2>
+      <p class="rule">AI chỉ góp ý. Nhóm chọn giữ, sửa hoặc bỏ, và nói rõ lý do.</p>
+      <div class="field"><label for="ainote">AI nói gì đáng chú ý</label><textarea id="ainote" data-k="ainote"></textarea></div>
+      <div class="field"><label for="dasua">Chúng em đã sửa…</label><textarea id="dasua" data-k="dasua"></textarea></div>
+      <div class="field must"><label for="khongtheo">Chúng em không làm theo AI ở điểm… vì… <span class="req">BẮT BUỘC</span></label>
+        <small>Đây là bằng chứng nhóm tự quyết định. Poster sẽ báo thiếu nếu để trống.</small>
+        <textarea id="khongtheo" data-k="khongtheo" aria-required="true"></textarea></div>
+      <h3>Phần 3 · Diện mạo sản phẩm mới</h3>
+      <p class="note">Chụp bản phác thảo trên giấy hoặc tải ảnh AI tạo. Ảnh đầu tiên là hình chính trên poster và tường triển lãm; mỗi ảnh được ghi “Phác thảo tay” hoặc “Ảnh do AI tạo”. Không chụp mặt người.</p>
+      <div class="ph" data-slot="look"></div>
+      <div class="preview" id="pv3"></div>
+      <h3>Phần 4 · Thuyết minh 90 giây</h3>
+      <div class="field"><label for="pitch1">1. Chúng tôi thay đổi điều gì? (khắc phục điểm yếu nào của sản phẩm cũ)</label><textarea id="pitch1" data-k="pitch1"></textarea></div>
+      <div class="field"><label for="pitch2">2. Giá trị khác biệt duy nhất là gì? (điểm chạm mới cho khách hàng)</label><textarea id="pitch2" data-k="pitch2"></textarea></div>
+      <div class="field"><label for="pitch3">3. Mục tiêu kéo dài chu kỳ sống ra sao? (kỳ vọng về doanh thu, phân khúc mới)</label><textarea id="pitch3" data-k="pitch3"></textarea></div>
+    </div>
+    <div class="nextbar"><button class="btn" data-go="2" type="button">← Bước 2</button><button class="btn primary" data-go="4" type="button">Sang Bước 4: Poster →</button></div>
+  </section>
+
+  <!-- STEP 4 -->
+  <section class="panel" id="step4" role="tabpanel" aria-label="Bước 4">
+    <div class="actions no-print">
+      <button class="btn primary" id="btnPrint" type="button">In</button>
+      <button class="btn yellow" id="btnFull" type="button">Toàn màn hình</button>
+      <button class="btn" id="btnReset" type="button">Làm lại</button>
+    </div>
+    <p class="missing no-print" id="missingNote"></p>
+    <div class="poster" id="poster">
+      <div class="p-head"><span>RE-FRESH Lab · Bài 8 · Marketing căn bản</span>
+        <span class="timer" id="timer"><output id="tOut" aria-live="off">1:30</output><button class="btn" id="tBtn" type="button">Bấm giờ 90 giây</button></span>
+        <span class="grp" id="ppGroup"></span></div>
+      <div class="p-body">
+        <div class="p-visual">
+          <div id="ppVisual"></div>
+          <div class="p-name" id="ppName"></div>
+          <p class="p-slogan" id="ppSlogan"></p>
+          <div id="ppBadges"></div>
+          <div class="p-sus" style="text-align:left"><b>Cam kết bền vững:</b> <span id="ppCam"></span>
+            <div class="meter-top"><span class="note">Thước đo bền vững (minh họa)</span><b id="ppScore" style="font-size:1.2rem"></b></div>
+            <div class="meter"><div id="ppFill"></div></div></div>
+        </div>
+        <div>
+          <div class="p-diag"><b>Tái sinh từ:</b> <span id="ppFrom"></span> · <b>Giai đoạn PLC:</b> <span id="ppPlc"></span><br><b>Nỗi đau lớn nhất:</b> <span id="ppPain"></span></div>
+          <table class="p-tbl">
+            <thead><tr><th>Cấp độ</th><th>Hiện trạng cũ</th><th>Ý tưởng cải tiến mới</th></tr></thead>
+            <tbody id="ppRows"></tbody>
+          </table>
+          <div class="p-pitch"><b>Thuyết minh 90 giây</b><ol><li id="pp1"></li><li id="pp2"></li><li id="pp3"></li></ol></div>
+          <div class="p-dec">
+            <div><b>Chúng em đã sửa:</b> <span id="ppSua"></span></div>
+            <div class="key"><b>Chúng em không làm theo AI:</b> <span id="ppKhong"></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="p-foot"><span>Công ty CP Nước giải khát FreshUp · Dự án RE-FRESH 2026 · Dữ liệu giả lập</span><span id="ppPeople"></span></div>
+    </div>
+  </section>
+</main>
+<footer class="foot">Trường Đại học Công nghiệp Hà Nội · Marketing căn bản (SE6233) · Dữ liệu chỉ lưu trên trình duyệt của máy này.</footer>
+
+<script src="config.js"></script>
+<script>
+(function(){
+"use strict";
+var SES = (window.RL && RL.session()) || "", OFF = false;
+try { OFF = !SES && sessionStorage.getItem("rl-off") === "1"; } catch(e) {}
+var KEY = "haui-b08-refresh-v2" + (SES ? ":" + SES : "");
+var GKEY = "rl-group:" + SES, GROUP = 0;
+try { GROUP = SES ? (+localStorage.getItem(GKEY) || 0) : 0; } catch(e) {}
+var PEND = [];
+/* Hồ sơ 4 sản phẩm: chép từ "Học liệu bài 8_Chu kì sống.docx" (Dữ liệu giả lập) */
+var PRODUCTS = {
+  matcha:{code:"01", name:"Trà xanh hòa tan “Matcha Ice”", short:"Matcha Ice", tag:"Dòng sản phẩm truyền thống", pack:"goi", color:"#5B8C3A",
+    en:"instant matcha green tea powder drink",
+    desc:"Dòng sản phẩm chủ lực từ những năm đầu thành lập công ty, dạng gói bột hòa tan hương matcha vị ngọt đậm.",
+    cols:["Chỉ số (3 năm gần nhất)","Năm 2024","Năm 2025","Dự phóng 2026"],
+    rows:[["Doanh thu (tỷ đồng)","45.0","42.0","36.5 (-13%)"],["Tốc độ tăng trưởng thị trường chung","+5%","+2%","-1% (thị trường đã bão hòa cao)"],["Lợi nhuận gộp (% trên doanh thu)","32%","25%","18% (chi phí khuyến mãi để giữ hàng tồn kho tăng mạnh)"],["Chi phí marketing / doanh thu","10%","15%","22% (phải tát cạn ngân sách để giữ kệ siêu thị)"]],
+    voc:[["Khách hàng siêu thị","Vị quá ngọt, nhiều đường hóa học, không hợp với xu hướng sống khỏe hiện nay. Bao bì túi zip nhựa cũ kỹ, hay bị vón cục khi ẩm."],["Đại lý phân phối","Sản phẩm bị các đối thủ trà đóng chai không độ lấn át hoàn toàn. Đề nghị chiết khấu cao hơn mới tiếp tục trưng bày."]],
+    q:"Sản phẩm này đang nằm ở giai đoạn nào của chu kỳ sống? Việc cố gắng bơm thêm tiền quảng cáo có cứu vãn được không hay cần chiến lược thu hoạch/tái sinh?",
+    old:{cot:"Đồ uống matcha pha nhanh, tiện lợi.",thuc:"Bột hòa tan hương matcha, vị ngọt đậm; khách chê nhiều đường hóa học, hay vón cục khi ẩm.",gt:"Khuyến mãi, chiết khấu cao để giữ kệ siêu thị.",bb:"Túi zip nhựa kiểu cũ, hay bị vón cục khi ẩm."}},
+  detox:{code:"02", name:"Nước ép trái cây tươi “Tropical Detox”", short:"Tropical Detox", tag:"Dòng sản phẩm mới ra mắt", pack:"thuytinh", color:"#F28C28",
+    en:"cold-pressed tropical fruit juice",
+    desc:"Nước ép trái cây mix công nghệ ép lạnh (cold-pressed), giữ nguyên dưỡng chất, không chất bảo quản, hạn sử dụng ngắn (7 ngày), nhắm vào dân văn phòng trẻ.",
+    cols:["Chỉ số (6 tháng qua)","Tháng 1 (ra mắt)","Tháng 3","Tháng 6 (hiện tại)"],
+    rows:[["Doanh thu (triệu đồng)","200","850","2.100 (+140% so với tháng trước)"],["Tốc độ tăng trưởng thị trường chung","+25%","+28%","+30% (nhu cầu đồ uống healthy bùng nổ)"],["Tỷ lệ khách hàng mua lại","15%","40%","62%"],["Chi phí marketing / doanh thu","45% (chạy thử nghiệm)","30%","20% (tối ưu hiệu quả chuyển đổi)"]],
+    voc:[["Khách hàng","Vị rất tươi, ngon như trái cây thật, rất thích thiết kế chai thủy tinh tối giản. Tuy nhiên, giá khá cao (45.000đ/chai) và khó mua vì chỉ bán ở vài quận trung tâm TP.HCM/Hà Nội. Hạn sử dụng quá ngắn nên mua trữ trong tủ lạnh khó."],["Hệ thống cửa hàng tiện lợi","Sản phẩm bán rất chạy vào khung giờ sáng và trưa, hàng thường xuyên hết sớm trước 12h trưa."]],
+    q:"Sản phẩm này đang ở giai đoạn nào? Thách thức lớn nhất lúc này là gì (quảng cáo nhận biết hay tối ưu chuỗi cung ứng, mở rộng kênh phân phối và cải tiến bao bì giữ lạnh)?",
+    old:{cot:"Nước ép tươi giữ nguyên dưỡng chất, cho lối sống khỏe của dân văn phòng trẻ.",thuc:"Ép lạnh, không chất bảo quản, hạn dùng 7 ngày, chai thủy tinh tối giản, giá 45.000đ/chai.",gt:"Chỉ bán ở vài quận trung tâm TP.HCM/Hà Nội; hàng thường hết trước 12h trưa.",bb:"Chai thủy tinh tối giản; hồ sơ chưa nói đến bao bì giữ lạnh."}},
+  energy:{code:"03", name:"Nước uống thể thao bù khoáng “Energy Z”", short:"Energy Z", tag:"Dòng sản phẩm đang tăng trưởng nóng", pack:"thethao", color:"#1F6FB2",
+    en:"electrolyte sports drink with vitamin B",
+    desc:"Nước khoáng thể thao bổ sung điện giải và vitamin B, nhắm vào giới trẻ chơi thể thao, gym, chạy bộ.",
+    cols:["Chỉ số (1 năm qua)","Quý III/2025","Quý IV/2025","Quý I/2026","Quý II/2026 (hiện tại)"],
+    rows:[["Doanh thu (tỷ đồng)","5.0","9.5","16.0","24.5 (+53%)"],["Thị phần trong phân khúc","4%","8%","14%","22% (đang bám sát đối thủ dẫn đầu 28%)"],["Lợi nhuận gộp (% trên doanh thu)","28%","35%","40%","42% (đạt hiệu quả nhờ quy mô sản xuất lớn)"],["Số khiếu nại chất lượng/tháng","5","12","35","80 (chủ yếu: nắp chai khó mở khi tay dính mồ hôi, vỏ chai quá trơn)"]],
+    voc:[["Khách hàng (cộng đồng runner/gymmer)","Nước uống vị ngon, đã khát, bù điện giải rất tốt khi tập nặng. Nhưng chai thể thao mà cầm nắm bị trơn tay lúc ra mồ hôi là điểm trừ lớn. Nắp chai thiết kế ren xoáy cũ rất khó mở nhanh bằng một tay khi đang chạy."],["Đối thủ cạnh tranh","3 thương hiệu lớn đang ráo riết tung ra các dòng sản phẩm tương tự với mức giá rẻ hơn 10%."]],
+    q:"Sản phẩm đang tăng trưởng nóng, doanh thu cao nhưng bắt đầu xuất hiện “nỗi đau” về bao bì/trải nghiệm. Nhóm cần làm gì để bảo vệ thị phần trước đối thủ?",
+    old:{cot:"Bù điện giải, đã khát khi tập nặng.",thuc:"Nước khoáng thể thao có điện giải và vitamin B, vị ngon; vỏ chai trơn tay khi ra mồ hôi.",gt:"Hồ sơ chưa mô tả dịch vụ đi kèm (nhóm tự nhận định).",bb:"Chai trơn tay khi ra mồ hôi; nắp ren xoáy kiểu cũ khó mở bằng một tay."}},
+  bubble:{code:"04", name:"Trà đen macchiato “Bubble Tea Box”", short:"Bubble Tea Box", tag:"Dòng sản phẩm đang chững lại", pack:"lon", color:"#6B3E26",
+    en:"ready-to-drink black milk tea with a cheese-foam macchiato top",
+    desc:"Trà sữa đóng lon pha sẵn kết hợp lớp kem phô mai macchiato bên trên (công nghệ van chống tràn độc quyền), ra mắt được 1,5 năm.",
+    cols:["Chỉ số","6 tháng đầu ra mắt","6 tháng tiếp theo","6 tháng gần nhất (hiện tại)"],
+    rows:[["Doanh thu (tỷ đồng)","12.0","18.0","18.5 (+2,7%, tăng trưởng gần như bằng 0)"],["Tốc độ tăng trưởng thị trường chung","+15%","+10%","+5% (cơn sốt trà sữa đóng lon hạ nhiệt)"],["Tỷ lệ khách hàng mua lại","55%","35%","20% (khách dùng thử rồi bỏ đi)"],["Tỷ lệ hàng tồn kho tại kho phân phối","5%","12%","28% (hàng chậm luân chuyển)"]],
+    voc:[["Khách hàng","Ý tưởng hay, lớp kem macchiato béo ngậy uống lạ miệng lúc đầu. Nhưng uống hết 1/3 lon là bắt đầu ngấy, vị quá ngọt gắt. Hơn nữa, giá 22.000đ/lon bị đắt so với việc mua một ly trà sữa tươi bên ngoài."],["Siêu thị và cửa hàng tiện lợi","Sản phẩm không còn độ hot, khách trẻ không còn hào hứng tìm kiếm trên kệ như trước."]],
+    q:"Sản phẩm đang rơi vào bẫy bão hòa sớm hoặc chững lại trước khi kịp bùng nổ. Nhóm cần giải pháp cải tiến nào về công thức (sản phẩm cốt lõi) hay dung tích/bao bì để vực dậy doanh số?",
+    old:{cot:"Trà sữa macchiato lạ miệng, tiện uống ngay.",thuc:"Trà đen và kem phô mai macchiato, van chống tràn; uống hết 1/3 lon là ngấy, vị quá ngọt gắt.",gt:"Giá 22.000đ/lon, khách thấy đắt hơn ly trà sữa tươi.",bb:"Lon pha sẵn, một cỡ."}}
+};
+var PLC = [["gioithieu","Giới thiệu"],["tangtruong","Tăng trưởng"],["baohoa","Bão hòa"],["suythoai","Suy thoái"]];
+var MAT = {
+  goi:{label:"Gói / túi zip", en:"resealable stand-up pouch", pts:8, note:"túi nhựa nhiều lớp thường khó tái chế"},
+  thuytinh:{label:"Chai thủy tinh", en:"glass bottle with a metal cap", pts:18, note:"bền, dùng lại được nếu có hệ thống thu hồi; nặng khi vận chuyển"},
+  thethao:{label:"Chai thể thao (nhựa)", en:"plastic sports bottle", pts:6, note:"tái chế được nhưng dễ thành rác nhựa nếu không thu gom"},
+  lon:{label:"Lon nhôm", en:"aluminium beverage can", pts:22, note:"nhôm tái chế được nhiều lần nếu được thu gom"},
+  giay:{label:"Hộp giấy", en:"gable-top paper carton", pts:16, note:"chủ yếu là giấy nhưng thường có màng nhựa và nhôm bên trong"}
+};
+var CK = [
+  ["thuhoi","Thu hồi vỏ hoặc đổi vỏ lấy ưu đãi",18],
+  ["nguyenlieu","Nguyên liệu mua ổn định từ nông dân trong nước",15],
+  ["bangchung","Có số liệu đo được hoặc chứng nhận cho tuyên bố môi trường",15],
+  ["duong","Giảm đường so với bản cũ",10],
+  ["inan","Bao bì ít lớp, in ít mực",10],
+  ["phanloai","In hướng dẫn phân loại rác trên bao bì",10]
+];
+var COLORS = [["#0A2463","Xanh navy"],["#5B8C3A","Xanh matcha"],["#F28C28","Cam nhiệt đới"],["#1F6FB2","Xanh thể thao"],["#6B3E26","Nâu trà"],["#FFC72C","Vàng"],["#F4EBD0","Kem"],["#E04F5F","Đỏ hồng"]];
+var FIELDS = ["nhom","lop","noidau","o_cot","n_cot","o_thuc","n_thuc","ten","thongdiep","o_gt","n_gt","o_bb","chatlieu","n_bb1","n_bb2","n_bb3","camket","phutrach","ainote","dasua","khongtheo","pitch1","pitch2","pitch3"];
+
+function blank(){ return {sp:"", plc:"", chatlieu:"goi", mau:"#0A2463", ck:[], photos:[], sample:false}; }
+var S = blank();
+try { var raw = localStorage.getItem(KEY); if (raw) S = Object.assign(blank(), JSON.parse(raw)); } catch(e) {}
+function persist(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} }
+function save(){ S._t = Date.now(); if (!LOCAL()) S._dirty = true; persist(); scheduleSync(); }
+
+/* ---------- class sync (Supabase) ---------- */
+function LOCAL(){ return !SES || !GROUP || S.sample; }
+function badge(cls, txt){ var b = $("sync"); if (!b) return; b.className = "sync " + cls; b.textContent = txt; }
+var syncT = null, retryT = null;
+function scheduleSync(){ clearTimeout(syncT); syncT = setTimeout(doSync, 1200); showBadge(); }
+function showBadge(){
+  if (S.sample) return badge("busy", "Ví dụ mẫu: không lưu lên lớp");
+  if (!SES) return badge("off", "Ngoại tuyến: chỉ lưu trên máy này");
+  if (!GROUP) return badge("busy", "Chưa chọn nhóm");
+  if (!navigator.onLine) return badge("off", "Chưa có mạng" + (PEND.length ? " · " + PEND.length + " ảnh chờ" : ""));
+  if (S._dirty || PEND.length) return badge("busy", "Đang lưu…");
+  badge("ok", "Đã lưu lên lớp ✓");
+}
+function payload(){ var d = {}; for (var k in S) if (k !== "_dirty" && k !== "step") d[k] = S[k]; d.nhom = String(GROUP); d.lop = SES; return d; }
+function doSync(){
+  if (LOCAL() || !S._dirty) return showBadge();
+  if (!navigator.onLine) return showBadge();
+  badge("busy", "Đang lưu…");
+  var t = S._t;
+  RL.upsert(SES, GROUP, S.sp, payload()).then(function(){ if (S._t === t) S._dirty = false; persist(); showBadge(); if (S._dirty) scheduleSync(); },
+    function(){ badge("off", "Chưa có mạng · sẽ thử lại"); clearTimeout(retryT); retryT = setTimeout(doSync, 8000); });
+}
+function flushUploads(){
+  if (LOCAL() || !PEND.length || !navigator.onLine) return showBadge();
+  var it = PEND[0]; if (it.busy) return; it.busy = true; showBadge();
+  RL.upload(SES + "/g" + GROUP + "/" + Date.now() + "-" + it.kind + ".jpg", it.blob).then(function(url){
+    PEND.shift(); S.photos.push({url:url, slot:it.slot, kind:it.kind, t:Date.now()}); save(); render(); flushUploads();
+  }, function(){ it.busy = false; badge("off", "Chưa tải được ảnh · sẽ thử lại"); setTimeout(flushUploads, 8000); });
+}
+window.addEventListener("online", function(){ doSync(); flushUploads(); });
+window.addEventListener("offline", showBadge);
+function pull(){
+  if (!SES || !GROUP) return;
+  RL.rows(SES, GROUP).then(function(r){
+    var row = r && r[0];
+    if (row && row.data && !S._dirty && !S.sample && (!S._t || Date.parse(row.updated_at) > S._t)){
+      S = Object.assign(blank(), row.data, {step:S.step}); persist(); syncInputs(); render();
+    }
+    doSync(); flushUploads();
+  }, function(){ showBadge(); });
+}
+
+/* ---------- photos ---------- */
+function addPhoto(file, slot, kind){
+  RL.compress(file).then(function(blob){
+    if (LOCAL()){ // offline / sample: keep on this device as data URL
+      var fr = new FileReader();
+      fr.onload = function(){ S.photos.push({url:fr.result, slot:slot, kind:kind, t:Date.now(), local:true}); save(); render(); };
+      fr.readAsDataURL(blob);
+    } else { PEND.push({slot:slot, kind:kind, blob:blob, preview:URL.createObjectURL(blob)}); render(); flushUploads(); }
+  }, function(){ alert("Không đọc được ảnh này. Hãy chụp lại hoặc chọn ảnh JPG/PNG."); });
+}
+function buildPhotos(){
+  var slots = ["cot","thuc","gt","bb"];
+  each(".lvl", function(l, i){ var d = document.createElement("div"); d.className = "ph"; d.dataset.slot = slots[i]; l.appendChild(d); });
+  each(".ph", function(ph){
+    ph.innerHTML = '<div class="phb"><label class="btn">Chụp phác thảo trên giấy<input type="file" accept="image/*" capture="environment" data-kind="sketch"></label>'
+      + '<label class="btn">Ảnh AI tạo<input type="file" accept="image/*" data-kind="ai"></label></div><div class="thumbs"></div>';
+    Array.prototype.forEach.call(ph.querySelectorAll("input"), function(inp){
+      inp.addEventListener("change", function(){ var f = inp.files && inp.files[0]; if (f) addPhoto(f, ph.dataset.slot, inp.dataset.kind); inp.value = ""; });
+    });
+    ph.querySelector(".thumbs").addEventListener("click", function(e){
+      var b = e.target.closest("button[data-i]"); if (!b) return;
+      if (confirm("Bỏ ảnh này khỏi bài của nhóm?")){ S.photos.splice(+b.dataset.i, 1); save(); render(); }
+    });
+  });
+}
+function renderPhotos(){
+  each(".ph", function(ph){
+    var slot = ph.dataset.slot, html = "";
+    S.photos.forEach(function(p, i){ if (p.slot === slot) html += '<figure><img alt="' + esc(RL.KIND[p.kind]) + '" src="' + esc(p.url) + '"><figcaption><b>' + esc(RL.KIND[p.kind]) + '</b><button type="button" data-i="' + i + '" aria-label="Bỏ ảnh">Bỏ</button></figcaption></figure>'; });
+    PEND.forEach(function(p){ if (p.slot === slot) html += '<figure class="pend"><img alt="" src="' + p.preview + '"><figcaption>Đang tải…</figcaption></figure>'; });
+    ph.querySelector(".thumbs").innerHTML = html;
+  });
+}
+function slotPhotos(slot){ return S.photos.filter(function(p){ return p.slot === slot; }); }
+function v(k){ return (S[k] || "").toString().trim(); }
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+function or(s, d){ return s ? s : d; }
+function P(){ return PRODUCTS[S.sp] || null; }
+function mat(){ return MAT[S.chatlieu] || MAT.goi; }
+function each(sel, fn){ Array.prototype.forEach.call(document.querySelectorAll(sel), fn); }
+
+/* ---------- inputs ---------- */
+function syncInputs(){
+  FIELDS.forEach(function(k){ var el = document.querySelector('[data-k="'+k+'"]'); if (el) el.value = S[k] || (k === "chatlieu" ? "goi" : ""); });
+  each("#plc input", function(i){ i.checked = i.value === S.plc; });
+  each("#checks input", function(i){ i.checked = S.ck.indexOf(i.value) > -1; });
+  var p = $("mauPick"); if (p) p.value = S.mau;
+}
+function build(){
+  FIELDS.forEach(function(k){
+    var el = document.querySelector('[data-k="'+k+'"]'); if (!el) return;
+    el.addEventListener("input", function(){ S[k] = el.value; save(); render(); });
+  });
+  var pick = $("pick");
+  Object.keys(PRODUCTS).forEach(function(id){
+    var d = PRODUCTS[id], b = document.createElement("button"); b.type = "button"; b.dataset.sp = id;
+    b.innerHTML = "<b>" + d.code + " · " + esc(d.short) + "</b><small>" + esc(d.tag) + "</small>";
+    b.addEventListener("click", function(){ choose(id); });
+    pick.appendChild(b);
+  });
+  PLC.forEach(function(x){
+    var l = document.createElement("label");
+    l.innerHTML = '<input type="radio" name="plc" value="'+x[0]+'"> ' + x[1];
+    l.querySelector("input").addEventListener("change", function(){ S.plc = x[0]; save(); render(); });
+    $("plc").appendChild(l);
+  });
+  var sw = $("swatches");
+  COLORS.forEach(function(c){
+    var b = document.createElement("button"); b.type = "button"; b.className = "sw";
+    b.style.background = c[0]; b.title = c[1]; b.setAttribute("aria-label", "Màu " + c[1]); b.dataset.c = c[0];
+    b.addEventListener("click", function(){ S.mau = c[0]; $("mauPick").value = c[0]; save(); render(); });
+    sw.appendChild(b);
+  });
+  var p = document.createElement("input"); p.type = "color"; p.id = "mauPick"; p.setAttribute("aria-label","Chọn màu khác");
+  p.addEventListener("input", function(){ S.mau = p.value; save(); render(); });
+  sw.appendChild(p);
+  CK.forEach(function(c){
+    var l = document.createElement("label");
+    l.innerHTML = '<input type="checkbox" value="'+c[0]+'"><span>'+esc(c[1])+'</span><span class="pts">+'+c[2]+'</span>';
+    l.querySelector("input").addEventListener("change", function(){
+      S.ck = []; each("#checks input", function(i){ if (i.checked) S.ck.push(i.value); }); save(); render();
+    });
+    $("checks").appendChild(l);
+  });
+}
+function choose(id){
+  var d = PRODUCTS[id], prev = P();
+  // prefill "Hiện trạng cũ" and container if empty or still the previous product's defaults
+  [["o_cot","cot"],["o_thuc","thuc"],["o_gt","gt"],["o_bb","bb"]].forEach(function(x){
+    if (!v(x[0]) || (prev && v(x[0]) === prev.old[x[1]])) S[x[0]] = d.old[x[1]];
+  });
+  if (!prev || S.chatlieu === prev.pack) S.chatlieu = d.pack;
+  if (!prev || S.mau === prev.color || S.mau === "#0A2463") S.mau = d.color;
+  S.sp = id; save(); syncInputs(); render();
+}
+
+/* ---------- score + greenwashing ---------- */
+function score(){
+  var m = mat(), total = m.pts, rows = [m.label + ": +" + m.pts + " (" + m.note + ")"];
+  CK.forEach(function(c){ if (S.ck.indexOf(c[0]) > -1){ total += c[2]; rows.push(c[1] + ": +" + c[2]); } });
+  return {total: total, rows: rows};
+}
+function fold(s){ return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/đ/g,"d"); }
+function alerts(){
+  var txt = fold(["ten","thongdiep","camket","n_cot","n_thuc","n_gt","n_bb1","n_bb2","n_bb3","pitch2"].map(v).join(" | "));
+  var ev = S.ck.indexOf("bangchung") > -1, out = [];
+  function has(list){ return list.some(function(w){ return txt.indexOf(fold(w)) > -1; }); }
+  if (has(["100% thân thiện","100 % thân thiện","hoàn toàn thân thiện","thân thiện tuyệt đối","xanh tuyệt đối","xanh 100%","sạch 100%","không gây hại","vô hại","hoàn toàn tự nhiên","tốt nhất cho môi trường","bảo vệ trái đất"]) && !ev)
+    out.push(["Tuyên bố tuyệt đối", "Câu kiểu “100%”, “tuyệt đối”, “không gây hại” cần bằng chứng đo được; sản phẩm nào cũng có tác động nhất định."]);
+  if (has(["không rác thải nhựa","không nhựa","không dùng nhựa","plastic free","zero plastic"]) && (S.chatlieu === "goi" || S.chatlieu === "thethao" || S.chatlieu === "giay"))
+    out.push(["Tuyên bố không khớp chất liệu", "Nhóm nói “không nhựa” nhưng bao bì trong là " + mat().label.toLowerCase() + " (" + mat().note + ")."]);
+  if (has(["không rác thải","zero waste","không để lại rác"]) && S.ck.indexOf("thuhoi") < 0)
+    out.push(["“Không rác thải” chưa có cách làm", "Chưa có việc thu hồi vỏ nên bao bì vẫn thành rác sau khi dùng."]);
+  if (has(["phân hủy sinh học","tự phân hủy","tự hủy"]) && !ev)
+    out.push(["“Phân hủy” cần điều kiện cụ thể", "Cần nói phân hủy ở đâu, trong bao lâu, theo tiêu chuẩn nào; nếu không, người mua dễ hiểu sai."]);
+  if (has(["trung hòa carbon","carbon trung tính","net zero","không phát thải","0 phát thải"]) && !ev)
+    out.push(["Tuyên bố về khí thải cần số liệu", "Cần số liệu đo phát thải và cách bù trừ được kiểm chứng."]);
+  if (has(["tái chế"]) && S.chatlieu === "thethao" && S.ck.indexOf("thuhoi") < 0)
+    out.push(["“Tái chế” mới là khả năng", "Chai nhựa tái chế được, nhưng nếu không có cách thu gom thì phần lớn vẫn có thể thành rác."]);
+  if (has(["thân thiện môi trường","xanh","bền vững","eco"]) && !ev && !out.length)
+    out.push(["Từ ngữ chung chung", "“Thân thiện môi trường”, “xanh”, “bền vững” nên đi kèm việc cụ thể và con số (ví dụ: thu hồi bao nhiêu vỏ mỗi tháng)."]);
+  return out;
+}
+
+/* ---------- SVG package ---------- */
+function lum(hex){
+  var h = hex.replace("#",""), f = function(c){ return c <= .03928 ? c/12.92 : Math.pow((c+.055)/1.055, 2.4); };
+  return .2126*f(parseInt(h.substr(0,2),16)/255) + .7152*f(parseInt(h.substr(2,2),16)/255) + .0722*f(parseInt(h.substr(4,2),16)/255);
+}
+function shade(hex, k){
+  var h = hex.replace("#",""), n = [0,2,4].map(function(i){ return parseInt(h.substr(i,2),16); });
+  n = n.map(function(c){ return Math.max(0, Math.min(255, Math.round(k < 0 ? c*(1+k) : c + (255-c)*k))); });
+  return "#" + n.map(function(c){ return ("0"+c.toString(16)).slice(-2); }).join("");
+}
+function wrap(t, max, lines){
+  var words = t.split(/\s+/).filter(Boolean), out = [], cur = "";
+  words.forEach(function(w){ if ((cur + " " + w).trim().length > max && cur){ out.push(cur); cur = w; } else cur = (cur + " " + w).trim(); });
+  if (cur) out.push(cur);
+  if (out.length > lines){ out = out.slice(0, lines); out[lines-1] = out[lines-1].replace(/.{0,1}$/, "…"); }
+  return out;
+}
+function pkgSVG(){
+  var c = /^#[0-9a-fA-F]{6}$/.test(S.mau) ? S.mau : "#0A2463";
+  var dark = shade(c, -.35), light = shade(c, .35), tc = lum(c) > .45 ? "#0A2463" : "#FFFFFF";
+  var name = or(v("ten"), P() ? P().short : "Tên sản phẩm"), slogan = or(v("thongdiep"), "Câu thông điệp của nhóm");
+  var m = S.chatlieu, body = "", ly = 190, nameW = 11, sloW = 18;
+  var defs = '<defs><linearGradient id="gm" x1="0" x2="1"><stop offset="0" stop-color="'+dark+'"/><stop offset=".35" stop-color="'+c+'"/><stop offset=".6" stop-color="'+light+'"/><stop offset="1" stop-color="'+dark+'"/></linearGradient>'
+    + '<linearGradient id="gs" x1="0" x2="1"><stop offset="0" stop-color="#8E99A8"/><stop offset=".5" stop-color="#E9EDF2"/><stop offset="1" stop-color="#8E99A8"/></linearGradient></defs>';
+  if (m === "lon"){
+    body = '<path d="M48 70 Q48 52 66 48 L134 48 Q152 52 152 70 L152 300 Q152 318 134 320 L66 320 Q48 318 48 300 Z" fill="url(#gm)"/>'
+      + '<ellipse cx="100" cy="50" rx="52" ry="10" fill="url(#gs)"/><ellipse cx="100" cy="50" rx="40" ry="6" fill="#C9D0D9"/><rect x="88" y="44" width="24" height="7" rx="3" fill="#9AA4B1"/>'
+      + '<path d="M52 312 Q100 330 148 312 L148 318 Q100 336 52 318 Z" fill="url(#gs)"/>';
+    ly = 185;
+  } else if (m === "thuytinh"){
+    body = '<path d="M84 40 H116 V78 Q116 96 140 116 Q152 128 152 150 V300 Q152 320 132 320 H68 Q48 320 48 300 V150 Q48 128 60 116 Q84 96 84 78 Z" fill="url(#gm)" opacity=".92"/>'
+      + '<rect x="80" y="28" width="40" height="16" rx="4" fill="url(#gs)"/>'
+      + '<path d="M62 135 Q60 220 64 300" stroke="#fff" stroke-width="6" opacity=".35" fill="none" stroke-linecap="round"/>';
+    ly = 205; sloW = 17;
+  } else if (m === "thethao"){
+    var grip = ""; for (var i = 0; i < 6; i++) grip += '<path d="M56 '+(262+i*9)+' Q100 '+(268+i*9)+' 144 '+(262+i*9)+'" stroke="'+dark+'" stroke-width="3" fill="none" opacity=".6"/>';
+    body = '<path d="M70 60 H130 Q150 64 150 90 V130 Q140 145 140 160 Q140 175 150 190 V300 Q150 320 130 320 H70 Q50 320 50 300 V190 Q60 175 60 160 Q60 145 50 130 V90 Q50 64 70 60 Z" fill="url(#gm)"/>'
+      + '<rect x="74" y="34" width="52" height="28" rx="6" fill="#1D2433"/><rect x="90" y="14" width="20" height="22" rx="5" fill="#3A4256"/>'
+      + grip + '<path d="M62 95 Q60 120 62 128" stroke="#fff" stroke-width="5" opacity=".35" fill="none" stroke-linecap="round"/>';
+    ly = 222; nameW = 10; sloW = 16;
+  } else if (m === "giay"){
+    body = '<polygon points="52,110 100,62 148,110" fill="'+light+'"/><rect x="72" y="40" width="56" height="12" fill="'+shade(c,.5)+'"/><polygon points="72,52 128,52 148,110 52,110" fill="'+shade(c,.2)+'"/>'
+      + '<rect x="52" y="110" width="96" height="210" fill="url(#gm)"/><rect x="118" y="66" width="14" height="16" rx="3" fill="#FFFFFF" opacity=".9"/>';
+    ly = 200; nameW = 10; sloW = 16;
+  } else {
+    body = '<path d="M46 64 H154 L158 296 Q158 318 136 318 H64 Q42 318 42 296 Z" fill="url(#gm)"/>'
+      + '<rect x="46" y="64" width="108" height="16" fill="'+dark+'"/><path d="M50 72 H150" stroke="'+light+'" stroke-width="3" stroke-dasharray="4 3"/>'
+      + '<path d="M46 64 L52 52 L58 64 L64 52 L70 64 L76 52 L82 64 L88 52 L94 64 L100 52 L106 64 L112 52 L118 64 L124 52 L130 64 L136 52 L142 64 L148 52 L154 64 Z" fill="'+shade(c,.15)+'"/>';
+    ly = 190;
+  }
+  var nl = wrap(name, nameW, 2), sl = wrap(slogan, sloW, 3), t = "", lx = 100;
+  var fs = nl.some(function(x){ return x.length > 8; }) ? 19 : 24;
+  t += '<rect x="'+(lx-48)+'" y="'+(ly-48)+'" width="96" height="'+(46 + nl.length*fs + sl.length*13)+'" rx="8" fill="'+(tc==="#FFFFFF"?"#000":"#fff")+'" opacity=".14"/>';
+  nl.forEach(function(x,i){ t += '<text x="'+lx+'" y="'+(ly-18+i*fs)+'" text-anchor="middle" font-size="'+fs+'" font-weight="800" fill="'+tc+'">'+esc(x)+'</text>'; });
+  sl.forEach(function(x,i){ t += '<text x="'+lx+'" y="'+(ly-14+nl.length*fs+i*13)+'" text-anchor="middle" font-size="10.5" font-style="italic" fill="'+tc+'">'+esc(x)+'</text>'; });
+  var tag = '<rect x="20" y="334" width="160" height="22" rx="11" fill="#FFC72C"/><text x="100" y="349" text-anchor="middle" font-size="9.5" font-weight="700" fill="#0A2463">Dữ liệu giả lập · thiết kế của nhóm</text>';
+  return '<svg viewBox="0 0 200 362" role="img" aria-label="Hình minh họa bao bì: '+esc(mat().label)+', tên '+esc(name)+'" font-family="Be Vietnam Pro, Segoe UI, Arial, sans-serif">'+defs+'<ellipse cx="100" cy="324" rx="62" ry="7" fill="#000" opacity=".12"/>'+body+t+tag+'</svg>';
+}
+
+/* ---------- prompts ---------- */
+function L(label, k){ return "- " + label + ": " + or(v(k), "(nhóm chưa điền)"); }
+function plcLabel(){ var x = PLC.filter(function(p){ return p[0] === S.plc; })[0]; return x ? x[1] : "(chưa chọn)"; }
+function bbNew(){ return ["Trong: " + or(v("n_bb1"),"…"), "Ngoài: " + or(v("n_bb2"),"…"), "Vận chuyển: " + or(v("n_bb3"),"…")].join("; "); }
+function promptA(){
+  var d = P();
+  return [
+"Bạn đóng vai ba khách hàng giả định ở Việt Nam để phản hồi một ý tưởng cải tiến sản phẩm của nhóm sinh viên môn Marketing căn bản. Đây là bài tập mô phỏng, công ty và số liệu là giả lập.",
+"",
+"Sản phẩm cũ: " + (d ? d.name + " của Công ty CP Nước giải khát FreshUp (giả lập). " + d.desc : "(nhóm chưa chọn sản phẩm)"),
+"Nhóm chẩn đoán: giai đoạn " + plcLabel() + "; nỗi đau lớn nhất của khách: " + or(v("noidau"), "(chưa điền)") + ".",
+"",
+"Ý tưởng cải tiến của nhóm:",
+L("Tên sản phẩm mới","ten"), L("Câu thông điệp","thongdiep"), L("Lợi ích cốt lõi","n_cot"), L("Sản phẩm thực tế","n_thuc"), L("Sản phẩm gia tăng","n_gt"),
+"- Bao bì: " + mat().label + ". " + bbNew(),
+L("Cam kết bền vững","camket"),
+"",
+"Hãy lần lượt đóng vai: (1) sinh viên 20 tuổi, (2) nhân viên văn phòng 30 tuổi, (3) mẹ có con nhỏ 35 tuổi. Mỗi người trả lời thật lòng, ngắn gọn:",
+"1. Tôi thích gì ở ý tưởng này?",
+"2. Tôi lo ngại điều gì?",
+"3. Tôi có mua không, vì sao?",
+"4. Giá tôi sẵn lòng trả cho một đơn vị (ghi rõ đây là phỏng đoán).",
+"",
+"Yêu cầu: không bịa số liệu thống kê, nghiên cứu hay tên thương hiệu thật; không viết lại hay đề xuất ý tưởng mới thay cho nhóm, chỉ phản hồi đúng ý tưởng trên. Trả lời bằng tiếng Việt."
+  ].join("\n");
+}
+function promptB(){
+  var d = P(), name = or(v("ten"), d ? d.short : "[product name]");
+  return [
+"Create a clean studio product shot of a single beverage package: " + (d ? d.en : "a drink") + ".",
+"Package: " + mat().en + ". Packaging details from the team (in Vietnamese, interpret visually): " + or(v("n_bb1"), "none") + ".",
+"Main colour: " + S.mau + ", used as the dominant label colour.",
+"The only text on the package is the product name: \"" + name + "\" (keep any Vietnamese diacritics exactly).",
+"Mood to express visually (do not write this text): \"" + or(v("thongdiep"), "fresh") + "\".",
+"Key improvement to make visible: " + or(v("n_thuc"), "none") + ".",
+"Style: soft natural light, plain light background, realistic, centred, square format.",
+"Rules: no real brand logos, no other text, no people, no certification marks or eco labels."
+  ].join("\n");
+}
+function promptC(){
+  var claims = [v("camket"), v("thongdiep") ? "Thông điệp: " + v("thongdiep") : ""].filter(Boolean).join("\n");
+  var done = CK.filter(function(c){ return S.ck.indexOf(c[0]) > -1; }).map(function(c){ return "- " + c[1]; }).join("\n") || "- (chưa chọn việc nào)";
+  return [
+"Bạn là người kiểm tra \"tẩy xanh\" (greenwashing) cho một bài tập marketing của sinh viên. Sản phẩm và công ty là giả lập.",
+"",
+"Sản phẩm: " + or(v("ten"), P() ? P().short : "(chưa đặt tên)") + "; bao bì trong: " + mat().label + ". " + bbNew(),
+"Tuyên bố bền vững của nhóm:",
+or(claims, "(nhóm chưa viết cam kết)"),
+"Việc nhóm nói sẽ làm:",
+done,
+"",
+"Hãy:",
+"1. Chỉ ra từng câu có thể gây hiểu lầm hoặc nói quá, giải thích ngắn gọn vì sao.",
+"2. Với mỗi tuyên bố, nêu bằng chứng cần có để nói như vậy là trung thực (số liệu đo được, chứng nhận, quy trình thu hồi…).",
+"3. Nói rõ tuyên bố nào đã ổn.",
+"",
+"Không bịa số liệu hay tên chứng nhận cụ thể nếu không chắc chắn; không viết lại toàn bộ cam kết thay nhóm. Trả lời bằng tiếng Việt, ngắn gọn."
+  ].join("\n");
+}
+
+/* ---------- render ---------- */
+function setText(id, s){ $(id).textContent = s; }
+function dossierHTML(d){
+  if (!d) return '<p class="note">Chọn một sản phẩm để xem hồ sơ kinh doanh.</p>';
+  return '<span class="badge">Dữ liệu giả lập</span> <span class="note">Hồ sơ “RE-FRESH 2026” · FreshUp</span>'
+    + '<h3>Sản phẩm ' + d.code + ': ' + esc(d.name) + ' <small class="note">(' + esc(d.tag) + ')</small></h3>'
+    + '<p>' + esc(d.desc) + '</p>'
+    + '<div class="tblwrap"><table class="data"><thead><tr>' + d.cols.map(function(c){ return "<th>" + esc(c) + "</th>"; }).join("") + '</tr></thead><tbody>'
+    + d.rows.map(function(r){ return "<tr>" + r.map(function(c){ return "<td>" + esc(c) + "</td>"; }).join("") + "</tr>"; }).join("") + '</tbody></table></div>'
+    + '<b>Tiếng nói khách hàng và kênh phân phối</b><ul class="voc">' + d.voc.map(function(x){ return "<li><b>" + esc(x[0]) + ":</b> “" + esc(x[1]) + "”</li>"; }).join("") + '</ul>'
+    + '<p class="q">Câu hỏi chẩn đoán: ' + esc(d.q) + '</p>';
+}
+var lastSp = null;
+function render(){
+  var d = P();
+  document.body.classList.toggle("is-sample", !!S.sample);
+  each(".pick button", function(b){ b.setAttribute("aria-pressed", b.dataset.sp === S.sp ? "true" : "false"); });
+  if (lastSp !== S.sp){ $("dossier").innerHTML = dossierHTML(d); lastSp = S.sp; }
+  each(".sw", function(b){ b.setAttribute("aria-pressed", b.dataset.c.toLowerCase() === (S.mau||"").toLowerCase() ? "true" : "false"); });
+  var svg = pkgSVG();
+  $("pv1").innerHTML = svg;
+  var look = slotPhotos("look"), main = look[0];
+  $("pv3").innerHTML = main ? "" : svg;
+  renderPhotos();
+  var sc = score();
+  setText("meterScore", sc.total + "/100");
+  setText("meterLabel", sc.total >= 70 ? "Tốt, hãy giữ bằng chứng" : sc.total >= 40 ? "Khá, còn thêm được" : "Mới bắt đầu");
+  $("meterFill").style.width = sc.total + "%"; $("meterBar").setAttribute("aria-valuenow", sc.total);
+  $("breakdown").innerHTML = sc.rows.map(function(r){ return "<li>" + esc(r) + "</li>"; }).join("");
+  var al = alerts();
+  $("alerts").innerHTML = al.length ? al.map(function(a){ return "<li><b>" + esc(a[0]) + ".</b> " + esc(a[1]) + "</li>"; }).join("")
+    : '<li class="clear">Chưa thấy từ ngữ đáng lo. Vẫn hãy tự hỏi: mỗi câu có bằng chứng chưa?</li>';
+  var ready = S.sp && S.plc && v("noidau") && v("n_cot") && v("n_thuc");
+  setText("emptyWarn", ready ? "" : "Nhóm chưa điền đủ Bước 1 (sản phẩm, giai đoạn PLC, nỗi đau, lợi ích cốt lõi và sản phẩm thực tế mới). Hãy tự nghĩ trước khi hỏi AI.");
+  setText("pA", promptA()); setText("pB", promptB()); setText("pC", promptC());
+  // poster
+  setText("ppGroup", "Nhóm " + or(v("nhom"), "…") + (v("lop") ? " · Lớp " + v("lop") : ""));
+  $("ppVisual").innerHTML = main ? '<img alt="' + esc(RL.KIND[main.kind]) + '" src="' + esc(main.url) + '"><br><span class="p-cap">' + esc(RL.KIND[main.kind]) + '</span>'
+    + (look.length > 1 ? '<div class="p-strip">' + look.slice(1).map(function(p){ return '<img alt="' + esc(RL.KIND[p.kind]) + '" title="' + esc(RL.KIND[p.kind]) + '" src="' + esc(p.url) + '">'; }).join("") + "</div>" : "") : svg;
+  setText("ppName", or(v("ten"), d ? d.short : "Tên sản phẩm"));
+  setText("ppSlogan", v("thongdiep") ? "“" + v("thongdiep") + "”" : "");
+  var bd = ['<span class="p-badge">Dữ liệu giả lập</span>'];
+  if (S.photos.some(function(p){ return p.kind === "ai"; })) bd.push('<span class="p-badge">Có ảnh do AI tạo</span>');
+  if (S.photos.some(function(p){ return p.kind === "sketch"; })) bd.push('<span class="p-badge">Có phác thảo tay</span>');
+  if (S.sample) bd.push('<span class="p-badge">VÍ DỤ MẪU</span>');
+  $("ppBadges").innerHTML = bd.join(" ");
+  setText("ppFrom", d ? d.short : "…"); setText("ppPlc", plcLabel()); setText("ppPain", or(v("noidau"), "…"));
+  var rows = [["Lợi ích cốt lõi", v("o_cot"), v("n_cot"), "cot"], ["Sản phẩm thực tế", v("o_thuc"), v("n_thuc"), "thuc"], ["Sản phẩm gia tăng", v("o_gt"), v("n_gt"), "gt"], ["Các lớp bao bì", v("o_bb"), bbNew(), "bb"]];
+  $("ppRows").innerHTML = rows.map(function(r){ var ph = slotPhotos(r[3]);
+    return "<tr><td>" + esc(r[0]) + "</td><td>" + esc(or(r[1], "…")) + "</td><td>" + esc(or(r[2], "…"))
+      + (ph.length ? '<div class="mini">' + ph.map(function(p){ return '<img alt="' + esc(RL.KIND[p.kind]) + '" title="' + esc(RL.KIND[p.kind]) + '" src="' + esc(p.url) + '">'; }).join("") + "</div>" : "") + "</td></tr>"; }).join("");
+  showBadge();
+  setText("ppCam", or(v("camket"), "…"));
+  setText("ppScore", sc.total + "/100"); $("ppFill").style.width = sc.total + "%";
+  setText("pp1", or(v("pitch1"), "Chúng tôi thay đổi điều gì? …"));
+  setText("pp2", or(v("pitch2"), "Giá trị khác biệt duy nhất? …"));
+  setText("pp3", or(v("pitch3"), "Mục tiêu kéo dài chu kỳ sống? …"));
+  setText("ppSua", or(v("dasua"), "…"));
+  setText("ppKhong", or(v("khongtheo"), "CÒN THIẾU: nhóm phải ghi điểm không làm theo AI và lý do."));
+  setText("ppPeople", v("phutrach") ? "Phụ trách: " + v("phutrach") : "");
+  setText("missingNote", v("khongtheo") ? "" : "Còn thiếu dòng bắt buộc ở Bước 3: “Chúng em không làm theo AI ở điểm… vì…”.");
+}
+
+/* ---------- steps ---------- */
+function go(n){
+  each("nav.steps button", function(b){ b.setAttribute("aria-selected", b.dataset.step == n ? "true" : "false"); });
+  each(".panel", function(p){ p.classList.toggle("active", p.id === "step" + n); });
+  S.step = n; persist(); window.scrollTo(0, 0);
+}
+document.querySelector("nav.steps").addEventListener("click", function(e){ var b = e.target.closest("button"); if (b) go(+b.dataset.step); });
+each("[data-go]", function(b){ b.addEventListener("click", function(){ go(+b.dataset.go); }); });
+
+/* ---------- copy ---------- */
+each("[data-copy]", function(b){
+  b.addEventListener("click", function(){
+    var text = $(b.dataset.copy).textContent, msg = b.nextElementSibling;
+    function ok(){ msg.textContent = "Đã sao chép"; setTimeout(function(){ msg.textContent = ""; }, 2500); }
+    function fallback(){
+      var ta = document.createElement("textarea"); ta.value = text; ta.setAttribute("readonly",""); ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); ok(); } catch(e){ msg.textContent = "Hãy bôi đen và sao chép thủ công"; }
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(ok, fallback); else fallback();
+  });
+});
+
+/* ---------- poster buttons + 90 s timer ---------- */
+$("btnPrint").addEventListener("click", function(){ window.print(); });
+$("btnFull").addEventListener("click", function(){
+  var p = $("poster");
+  if (document.fullscreenElement) { document.exitFullscreen(); return; }
+  if (p.requestFullscreen) p.requestFullscreen().catch(function(){});
+  else if (p.webkitRequestFullscreen) p.webkitRequestFullscreen();
+});
+var tLeft = 90, tId = null;
+function tShow(){ setText("tOut", tLeft > 0 ? Math.floor(tLeft/60) + ":" + ("0" + tLeft%60).slice(-2) : "Hết giờ"); $("timer").classList.toggle("over", tLeft <= 10); }
+$("tBtn").addEventListener("click", function(){
+  if (tId){ clearInterval(tId); tId = null; tLeft = 90; tShow(); this.textContent = "Bấm giờ 90 giây"; return; }
+  tLeft = 90; tShow(); this.textContent = "Dừng / đặt lại";
+  tId = setInterval(function(){ tLeft--; tShow(); if (tLeft <= 0){ clearInterval(tId); tId = null; $("tBtn").textContent = "Bấm giờ 90 giây"; } }, 1000);
+});
+function reset(){
+  if (!confirm("Xóa toàn bộ nội dung của nhóm trên máy này và làm lại từ đầu?")) return;
+  S = blank(); PEND = []; save(); syncInputs(); render(); go(1);
+}
+$("btnReset").addEventListener("click", reset);
+$("btnReset2").addEventListener("click", reset);
+
+/* ---------- sample (Energy Z) ---------- */
+var SAMPLE = {"sp":"energy","plc":"tangtruong","nhom":"Mẫu","chatlieu":"thethao","mau":"#1F6FB2","ck":["thuhoi","inan","phanloai"],"noidau":"Chai trơn tay khi ra mồ hôi, nắp ren khó mở bằng một tay khi đang chạy; khiếu nại tăng từ 5 lên 80 mỗi tháng; ba đối thủ ra hàng tương tự rẻ hơn 10%.","o_cot":"Bù nước, điện giải khi tập","n_cot":"Bù khoáng mà không phải dừng nhịp tập","o_thuc":"Chai trơn, nắp ren vặn","n_thuc":"Thân chai eo, vân lục giác chống trượt; nắp bật một tay có van chống tràn; giữ công thức vị cũ","o_gt":"Không có","n_gt":"Quét mã trên nhãn ra bảng tính lượng nước cần uống theo buổi tập; điểm đổi vỏ tại phòng gym đối tác","o_bb":"Chai PET, màng co, thùng carton","n_bb1":"Chai PET có 50% nhựa tái chế (rPET), nắp bật một tay","n_bb2":"Lốc 6 chai bằng quai giấy thay màng co","n_bb3":"Thùng carton tái chế","ten":"Energy Z","thongdiep":"Chắc tay. Bứt tốc.","camket":"Dùng chai rPET 50% nhựa tái chế; điểm đổi vỏ tại phòng gym đối tác; đếm và công bố số vỏ thu hồi mỗi quý (giả lập).","phutrach":"Nhóm mẫu (Dữ liệu giả lập)","ainote":"Phản hồi ba vai khách hàng: người mẹ lo chai đổ trong túi; sinh viên lo giá. Kiểm tra tẩy xanh: bỏ câu “100% thân thiện”, nói rõ tỷ lệ nhựa tái chế.","dasua":"Thêm van chống tràn (từ phản hồi người mẹ); ghi rõ lượng đường trên nhãn; bảng tính lượng nước mở bằng trình duyệt, không cần cài ứng dụng; bỏ chữ \"100% thân thiện\".","khongtheo":"AI gợi ý giảm giá 10% để bằng đối thủ. Nhóm không làm theo: sản phẩm đang tăng trưởng, lãi gộp 42% là nguồn tiền đổi khuôn chai; khách phàn nàn về chai và nắp, không phàn nàn về giá. Nhóm cạnh tranh bằng trải nghiệm, giữ giá cũ.","pitch1":"Chúng tôi thay đổi: sửa đúng hai lời phàn nàn lớn nhất, chai bám chắc tay ướt và nắp mở bằng một ngón cái.","pitch2":"Khác biệt duy nhất: chai thể thao duy nhất trong phân khúc dùng được trọn vẹn khi đang chạy. Khẩu hiệu: \"Chắc tay. Bứt tốc.\"","pitch3":"Kéo dài chu kỳ sống: giữ khách runner/gym trước đối thủ giá rẻ, mở thêm nhóm đạp xe và cầu lông; đưa khiếu nại về dưới 10 mỗi tháng.","photos":[{"url":"bao-bi-mau-1.jpg","slot":"look","kind":"ai","t":1},{"url":"bao-bi-mau-2.jpg","slot":"look","kind":"ai","t":2},{"url":"bao-bi-mau-3.jpg","slot":"look","kind":"ai","t":3}]}; // từ nhom-mau.json (Dữ liệu giả lập)
+function applySample(obj){
+  var keep = S.step;
+  S = Object.assign(blank(), obj, {sample:true, step:keep, photos:(obj.photos || [])});
+  if (!PRODUCTS[S.sp]) S.sp = "energy";
+  if (!MAT[S.chatlieu]) S.chatlieu = PRODUCTS[S.sp].pack;
+  save(); syncInputs(); render();
+}
+$("btnSample").addEventListener("click", function(){
+  var hasWork = S.sp || FIELDS.some(function(k){ return k !== "chatlieu" && v(k); });
+  if (hasWork && !S.sample && !confirm("Ví dụ mẫu sẽ thay nội dung nhóm đang nhập trên máy này (bài đã lưu lên lớp vẫn giữ nguyên, ví dụ mẫu không được lưu lên lớp). Tiếp tục?")) return;
+  applySample(SAMPLE);
+});
+
+/* ---------- gate: class code + group number ---------- */
+function showGate(){
+  var g = $("gate");
+  if (!SES && !OFF){ $("gateCode").style.display = ""; $("gateGroup").style.display = "none"; g.classList.add("show"); setTimeout(function(){ $("codeIn").focus(); }, 50); return; }
+  if (SES && !GROUP){
+    $("gateCode").style.display = "none"; $("gateGroup").style.display = ""; setText("gateLop", SES);
+    var grid = $("gateGrid"); grid.innerHTML = "";
+    for (var i = 1; i <= 20; i++){ var b = document.createElement("button"); b.type = "button"; b.textContent = i; b.dataset.n = i; grid.appendChild(b); }
+    g.classList.add("show");
+    RL.rows(SES).then(function(r){ r.forEach(function(row){ var b = grid.querySelector('[data-n="' + row.group_no + '"]'); if (b){ b.classList.add("taken"); b.setAttribute("aria-label", "Nhóm " + row.group_no + " (đã có bài)"); } }); }, function(){});
+    return;
+  }
+  g.classList.remove("show");
+}
+$("gateGrid").addEventListener("click", function(e){
+  var b = e.target.closest("button"); if (!b) return;
+  var n = +b.dataset.n;
+  if (b.classList.contains("taken") && !confirm("Nhóm " + n + " đã có bài trên lớp. Em là thành viên nhóm " + n + " và muốn tiếp tục bài của nhóm?")) return;
+  if (!confirm("Xác nhận: em thuộc nhóm " + n + "?")) return;
+  GROUP = n; try { localStorage.setItem(GKEY, String(n)); } catch(err) {}
+  S._t = 0; showGate(); whoami(); pull();
+});
+$("codeGo").addEventListener("click", function(){
+  var c = $("codeIn").value.toUpperCase().replace(/[^A-Z0-9-]/g, "");
+  if (c.length < 2) { $("codeIn").focus(); return; }
+  location.search = "?lop=" + encodeURIComponent(c);
+});
+$("codeIn").addEventListener("keydown", function(e){ if (e.key === "Enter") $("codeGo").click(); });
+$("codeOff").addEventListener("click", function(){ OFF = true; try { sessionStorage.setItem("rl-off", "1"); } catch(e) {} showGate(); whoami(); });
+$("btnGroup").addEventListener("click", function(){
+  if (!SES){ OFF = false; try { sessionStorage.removeItem("rl-off"); } catch(e) {} showGate(); return; }
+  if (!confirm("Đổi sang nhóm khác? Bài của nhóm hiện tại vẫn được lưu trên lớp.")) return;
+  try { localStorage.removeItem(GKEY); localStorage.removeItem(KEY); } catch(e) {}
+  GROUP = 0; S = blank(); PEND = []; syncInputs(); render(); showGate();
+});
+function whoami(){
+  setText("who", SES ? "Lớp " + SES + (GROUP ? " · Nhóm " + GROUP : "") : "Ngoại tuyến");
+  $("btnGroup").textContent = SES ? "Đổi nhóm" : "Nhập mã lớp";
+  S.nhom = GROUP ? String(GROUP) : (S.nhom || ""); S.lop = SES;
+}
+
+buildPhotos(); build(); whoami(); syncInputs(); render(); go(S.step || 1); showGate(); pull();
+})();
+</script>
+</body>
+</html>

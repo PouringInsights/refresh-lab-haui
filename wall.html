@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tường triển lãm · RE-FRESH Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800&display=swap">
+<style>
+:root{--navy:#0A2463;--yellow:#FFC72C;--yellow-soft:#FFF4D1;--ink:#14213D;--muted:#4A5568;--line:#D5DBE5;--bg:#EEF1F7;--ok:#1E7B3A;--bad:#B42318;
+  --font:"Be Vietnam Pro",system-ui,"Segoe UI",Roboto,Arial,sans-serif}
+*{box-sizing:border-box}
+html{font-size:16px}
+@media (min-width:1600px){html{font-size:19px}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.45;overflow-x:hidden}
+header{background:var(--navy);color:#fff;border-bottom:5px solid var(--yellow);padding:12px 16px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+header h1{margin:0;font-size:clamp(1.2rem,3vw,2rem);font-weight:800}
+header h1 span{color:var(--yellow)}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-weight:700}
+.live{padding:4px 10px;border-radius:999px;background:#fff;color:var(--navy);font-size:.85rem}
+.live.ok{background:#D7F5E1;color:#145A2A}.live.off{background:#FDE2E0;color:#8A1C12}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;padding:16px;max-width:1900px;margin:0 auto}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;text-align:left;font:inherit;color:inherit;padding:0}
+.card:hover,.card:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.c-top{display:flex;justify-content:space-between;gap:6px;background:var(--navy);color:#fff;padding:6px 10px;font-weight:800}
+.c-top .g{color:var(--yellow)}
+.c-img{aspect-ratio:4/3;background:#F3F5F9;display:grid;place-items:center;position:relative;overflow:hidden}
+.c-img img{width:100%;height:100%;object-fit:cover}
+.c-img .ph{font-size:1.6rem;font-weight:800;color:#fff;padding:12px;text-align:center}
+.cap{position:absolute;left:8px;bottom:8px;background:var(--navy);color:#fff;font-size:.75rem;font-weight:700;padding:2px 8px;border-radius:6px}
+.c-body{padding:10px 12px;flex:1}
+.c-name{font-weight:800;font-size:1.25rem;color:var(--navy);line-height:1.15}
+.c-slo{font-style:italic;margin:2px 0 6px}
+.tag{display:inline-block;background:var(--yellow);color:var(--navy);font-weight:800;font-size:.75rem;padding:2px 8px;border-radius:6px;margin:0 4px 4px 0}
+.c-body ol{margin:6px 0 0;padding-left:18px;font-size:.9rem}
+.c-body ol li{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.c-foot{font-size:.78rem;color:var(--muted);padding:4px 12px 8px}
+.empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:40px 10px;font-size:1.2rem}
+.ask{max-width:460px;margin:40px auto;padding:16px;background:#fff;border-radius:14px}
+.ask input{width:100%;min-height:48px;font:inherit;font-size:1.2rem;padding:8px 12px;border:2px solid var(--line);border-radius:10px;text-transform:uppercase}
+.btn{min-height:44px;padding:8px 16px;border-radius:10px;border:2px solid var(--navy);background:#fff;color:var(--navy);font:inherit;font-weight:700;cursor:pointer}
+.btn.y{background:var(--yellow);border-color:var(--yellow)}
+dialog{width:min(1400px,96vw);max-height:94vh;border:0;border-radius:14px;padding:0;color:var(--ink)}
+dialog::backdrop{background:rgba(10,36,99,.75)}
+.d-head{position:sticky;top:0;background:var(--navy);color:#fff;display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:5px solid var(--yellow);z-index:1}
+.d-head b{color:var(--yellow);font-size:1.2rem}
+.timer{display:flex;gap:8px;align-items:center}
+.timer output{font-variant-numeric:tabular-nums;font-size:2.2rem;font-weight:800;color:var(--yellow);min-width:3.4em;text-align:right}
+.timer.over output{color:#FF8A80}
+.d-body{display:grid;grid-template-columns:1fr;gap:16px;padding:16px}
+@media (min-width:900px){.d-body{grid-template-columns:minmax(0,.8fr) minmax(0,1.4fr)}}
+.d-vis{text-align:center}
+.d-vis img.main{width:100%;max-height:52vh;object-fit:contain;border-radius:10px;background:#F3F5F9}
+.strip{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:6px}
+.strip figure{margin:0;width:92px;font-size:.7rem}
+.strip img{width:92px;height:70px;object-fit:cover;border-radius:6px}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{background:var(--navy);color:#fff}
+td:first-child{font-weight:700;color:var(--navy);width:20%}
+td:nth-child(2){color:var(--muted);width:30%}
+td .mini{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}
+td .mini img{width:64px;height:50px;object-fit:cover;border-radius:4px}
+.diag{background:#EEF2FA;border-radius:8px;padding:8px 10px;margin-bottom:10px}
+.pitch{border:2px solid var(--yellow);background:var(--yellow-soft);border-radius:10px;padding:8px 12px;margin-top:10px;font-size:1.05rem}
+.pitch ol{margin:4px 0 0;padding-left:22px}
+.dec{margin-top:10px;padding:8px 10px;border-radius:8px;background:#EFFAF2;border-left:5px solid var(--ok)}
+.dec.key{background:var(--yellow-soft);border-left-color:var(--yellow)}
+.btn:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+</style>
+</head>
+<body>
+<header>
+  <h1><span>RE-FRESH Lab</span> · Tường triển lãm</h1>
+  <div class="meta"><span id="lop"></span><span id="count"></span><span class="live" id="live">Đang kết nối…</span></div>
+</header>
+<main id="main"></main>
+<dialog id="dlg" aria-labelledby="dTitle">
+  <div class="d-head"><b id="dTitle"></b>
+    <span class="timer" id="timer"><output id="tOut">1:30</output><button class="btn y" id="tBtn" type="button">Bấm giờ 90 giây</button></span>
+    <button class="btn" id="dClose" type="button">Đóng (Esc)</button></div>
+  <div id="dBody"></div>
+</dialog>
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+(function(){
+"use strict";
+var SES = RL.session(), ROWS = [], openNo = 0, rtOK = false;
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+function t(d, k){ return (d && d[k] ? String(d[k]) : "").trim(); }
+function safeUrl(u){ return /^https:\/\//.test(u || "") ? u : ""; }
+function photos(d, slot){ return ((d && d.photos) || []).filter(function(p){ return safeUrl(p.url) && (!slot || p.slot === slot); }); }
+function mainPhoto(d){ return photos(d, "look")[0] || photos(d)[0]; }
+
+if (!SES){
+  $("main").innerHTML = '<div class="ask"><h2>Nhập mã lớp</h2><input id="code" aria-label="Mã lớp" maxlength="20"><p><button class="btn y" id="go" type="button">Mở tường</button></p></div>';
+  $("go").onclick = function(){ var c = $("code").value.toUpperCase().replace(/[^A-Z0-9-]/g, ""); if (c.length >= 2) location.search = "?lop=" + c; };
+  $("live").textContent = "Chưa có mã lớp"; return;
+}
+$("lop").textContent = "Lớp " + SES;
+
+function card(r){
+  var d = r.data || {}, m = mainPhoto(d), name = t(d, "ten") || RL.PROD[r.product] || "Chưa đặt tên";
+  var img = m ? '<img alt="' + esc(RL.KIND[m.kind]) + '" src="' + esc(m.url) + '" loading="lazy"><span class="cap">' + esc(RL.KIND[m.kind]) + '</span>'
+              : '<div class="ph" style="background:' + esc(/^#[0-9a-fA-F]{6}$/.test(d.mau || "") ? d.mau : "#0A2463") + ';width:100%;height:100%;display:grid;place-items:center">' + esc(name) + '</div>';
+  var p = ["pitch1","pitch2","pitch3"].map(function(k){ return t(d, k); });
+  return '<button class="card" type="button" data-g="' + r.group_no + '">'
+    + '<div class="c-top"><span class="g">Nhóm ' + r.group_no + '</span><span>' + esc(RL.PROD[r.product] || "Chưa chọn sản phẩm") + '</span></div>'
+    + '<div class="c-img">' + img + '</div>'
+    + '<div class="c-body"><div class="c-name">' + esc(name) + '</div>' + (t(d, "thongdiep") ? '<div class="c-slo">“' + esc(t(d, "thongdiep")) + '”</div>' : "")
+    + (d.plc ? '<span class="tag">' + esc(RL.PLC[d.plc] || "") + '</span>' : "") + (t(d, "khongtheo") ? '<span class="tag">Có quyết định riêng</span>' : "")
+    + (p.some(Boolean) ? "<ol>" + p.map(function(x){ return "<li>" + esc(x || "…") + "</li>"; }).join("") + "</ol>" : "")
+    + '</div><div class="c-foot">Cập nhật ' + new Date(r.updated_at).toLocaleTimeString("vi-VN", {hour:"2-digit", minute:"2-digit"}) + ' · Dữ liệu giả lập</div></button>';
+}
+function draw(){
+  $("count").textContent = ROWS.length + " nhóm";
+  $("main").innerHTML = '<div class="grid">' + (ROWS.length ? ROWS.map(card).join("") : '<div class="empty">Chưa có nhóm nào gửi bài. Bài sẽ hiện ở đây ngay khi các nhóm bắt đầu nhập.</div>') + '</div>';
+  if (openNo) detail(openNo);
+}
+function thumbs(list){ return list.map(function(p){ return '<figure><img alt="' + esc(RL.KIND[p.kind]) + '" src="' + esc(p.url) + '"><figcaption>' + esc(RL.KIND[p.kind]) + '</figcaption></figure>'; }).join(""); }
+function detail(no){
+  var r = ROWS.filter(function(x){ return x.group_no === no; })[0]; if (!r) return;
+  var d = r.data || {}, m = mainPhoto(d), name = t(d, "ten") || RL.PROD[r.product] || "Chưa đặt tên";
+  $("dTitle").textContent = "Nhóm " + no + " · " + name;
+  var bb = ["Trong: " + (t(d, "n_bb1") || "…"), "Ngoài: " + (t(d, "n_bb2") || "…"), "Vận chuyển: " + (t(d, "n_bb3") || "…")].join("; ");
+  var rows = [["Lợi ích cốt lõi","o_cot",t(d,"n_cot"),"cot"],["Sản phẩm thực tế","o_thuc",t(d,"n_thuc"),"thuc"],["Sản phẩm gia tăng","o_gt",t(d,"n_gt"),"gt"],["Các lớp bao bì","o_bb",bb,"bb"]];
+  var others = photos(d).filter(function(p){ return p !== m && p.slot === "look"; });
+  $("dBody").innerHTML = '<div class="d-body"><div class="d-vis">'
+    + (m ? '<img class="main" alt="' + esc(RL.KIND[m.kind]) + '" src="' + esc(m.url) + '"><div><span class="tag">' + esc(RL.KIND[m.kind]) + '</span></div>' : "")
+    + '<h2 style="color:#0A2463;margin:6px 0 0">' + esc(name) + '</h2>' + (t(d, "thongdiep") ? '<p><i>“' + esc(t(d, "thongdiep")) + '”</i></p>' : "")
+    + (others.length ? '<div class="strip">' + thumbs(others) + '</div>' : "")
+    + (t(d, "camket") ? '<p style="text-align:left"><b>Cam kết bền vững:</b> ' + esc(t(d, "camket")) + '</p>' : "")
+    + '</div><div><div class="diag"><b>Tái sinh từ:</b> ' + esc(RL.PROD[r.product] || "…") + ' · <b>Giai đoạn PLC:</b> ' + esc(RL.PLC[d.plc] || "…") + '<br><b>Nỗi đau lớn nhất:</b> ' + esc(t(d, "noidau") || "…") + '</div>'
+    + '<table><thead><tr><th>Cấp độ</th><th>Hiện trạng cũ</th><th>Ý tưởng cải tiến mới</th></tr></thead><tbody>'
+    + rows.map(function(x){ var ph = photos(d, x[3]); return "<tr><td>" + x[0] + "</td><td>" + esc(t(d, x[1]) || "…") + "</td><td>" + esc(x[2] || "…")
+        + (ph.length ? '<div class="mini">' + ph.map(function(p){ return '<img alt="' + esc(RL.KIND[p.kind]) + '" title="' + esc(RL.KIND[p.kind]) + '" src="' + esc(p.url) + '">'; }).join("") + "</div>" : "") + "</td></tr>"; }).join("")
+    + '</tbody></table><div class="pitch"><b>Thuyết minh 90 giây</b><ol><li>' + esc(t(d, "pitch1") || "…") + '</li><li>' + esc(t(d, "pitch2") || "…") + '</li><li>' + esc(t(d, "pitch3") || "…") + '</li></ol></div>'
+    + (t(d, "dasua") ? '<div class="dec"><b>Chúng em đã sửa:</b> ' + esc(t(d, "dasua")) + '</div>' : "")
+    + '<div class="dec key"><b>Chúng em không làm theo AI:</b> ' + esc(t(d, "khongtheo") || "(nhóm chưa ghi)") + '</div>'
+    + '<p style="font-size:.8rem;color:#4A5568">Công ty CP Nước giải khát FreshUp · Dự án RE-FRESH 2026 · Dữ liệu giả lập</p></div></div>';
+}
+$("main").addEventListener("click", function(e){
+  var c = e.target.closest(".card"); if (!c) return;
+  openNo = +c.dataset.g; detail(openNo); resetTimer();
+  if (!$("dlg").open) $("dlg").showModal();
+});
+$("dClose").onclick = function(){ $("dlg").close(); };
+$("dlg").addEventListener("close", function(){ openNo = 0; resetTimer(); });
+
+var tLeft = 90, tId = null;
+function tShow(){ $("tOut").textContent = tLeft > 0 ? Math.floor(tLeft / 60) + ":" + ("0" + tLeft % 60).slice(-2) : "Hết giờ"; $("timer").classList.toggle("over", tLeft <= 10); }
+function resetTimer(){ clearInterval(tId); tId = null; tLeft = 90; tShow(); $("tBtn").textContent = "Bấm giờ 90 giây"; }
+$("tBtn").onclick = function(){
+  if (tId) return resetTimer();
+  this.textContent = "Dừng / đặt lại";
+  tId = setInterval(function(){ tLeft--; tShow(); if (tLeft <= 0){ clearInterval(tId); tId = null; $("tBtn").textContent = "Bấm giờ 90 giây"; } }, 1000);
+};
+
+function live(cls, txt){ var l = $("live"); l.className = "live " + cls; l.textContent = txt; }
+var busy = false, last = "";
+function load(){
+  if (busy) return; busy = true;
+  RL.rows(SES).then(function(r){ busy = false; var j = JSON.stringify(r); if (j !== last){ last = j; ROWS = r; draw(); } live("ok", rtOK ? "Trực tiếp ✓" : "Tự cập nhật 5 giây ✓"); },
+    function(){ busy = false; live("off", "Mất kết nối · đang thử lại"); });
+}
+load();
+setInterval(function(){ if (!rtOK) load(); }, 5000);
+setInterval(load, 30000); // safety refresh even with realtime
+try {
+  var sb = window.supabase.createClient(RL.url, RL.key);
+  sb.channel("wall-" + SES).on("postgres_changes", {event:"*", schema:"public", table:"refresh_lab", filter:"session=eq." + SES}, function(){ load(); })
+    .subscribe(function(st){ rtOK = st === "SUBSCRIBED"; load(); });
+} catch(e) { rtOK = false; }
+})();
+</script>
+</body>
+</html>

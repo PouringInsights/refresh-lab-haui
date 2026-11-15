@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Giảng viên · RE-FRESH Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800&display=swap">
+<style>
+:root{--navy:#0A2463;--yellow:#FFC72C;--ink:#14213D;--muted:#4A5568;--line:#D5DBE5;--bg:#F3F5F9;--font:"Be Vietnam Pro",system-ui,"Segoe UI",Roboto,Arial,sans-serif}
+*{box-sizing:border-box}
+html{font-size:16px}
+@media (min-width:1600px){html{font-size:19px}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.45;overflow-x:hidden}
+header{background:var(--navy);color:#fff;border-bottom:5px solid var(--yellow);padding:12px 16px}
+header h1{margin:0;font-size:clamp(1.2rem,3vw,2rem)}
+header h1 span{color:var(--yellow)}
+main{max-width:1200px;margin:0 auto;padding:16px;display:grid;grid-template-columns:1fr;gap:16px}
+@media (min-width:900px){main{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr)}}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px}
+h2{margin:0 0 8px;color:var(--navy)}
+label{font-weight:700;display:block;margin-bottom:4px}
+input{width:100%;min-height:52px;font:inherit;font-size:1.5rem;font-weight:800;letter-spacing:.06em;padding:8px 12px;border:2px solid var(--line);border-radius:10px;text-transform:uppercase}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.btn{min-height:44px;padding:8px 16px;border-radius:10px;border:2px solid var(--navy);background:#fff;color:var(--navy);font:inherit;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center}
+.btn.p{background:var(--navy);color:#fff}.btn.y{background:var(--yellow);border-color:var(--yellow)}
+.btn:focus-visible,input:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.qr{background:#fff;text-align:center}
+.qr #qr svg{width:100%;max-width:min(560px,70vh);height:auto}
+.code{font-size:clamp(2rem,6vw,4rem);font-weight:800;color:var(--navy);letter-spacing:.08em;margin:4px 0}
+.url{word-break:break-all;color:var(--muted);font-size:.95rem}
+.note{color:var(--muted);font-size:.9rem}
+ol li{margin-bottom:4px}
+#cnt{font-weight:800;color:var(--navy)}
+</style>
+</head>
+<body>
+<header><h1><span>RE-FRESH Lab</span> · Trang giảng viên</h1></header>
+<main>
+  <div class="card">
+    <h2>1. Mã lớp</h2>
+    <label for="code">Mã phiên (chữ, số, gạch ngang)</label>
+    <input id="code" maxlength="20" autocomplete="off">
+    <div class="row"><button class="btn" id="gen" type="button">Tạo mã mới</button><button class="btn p" id="show" type="button">Hiện mã QR</button></div>
+    <p class="note">Mỗi lớp hoặc mỗi buổi dùng một mã riêng. Bài của các nhóm được lưu theo mã này.</p>
+    <h2 style="margin-top:16px">2. Mở cho lớp</h2>
+    <div class="row"><a class="btn y" id="wall" target="_blank" rel="noopener">Mở tường triển lãm</a><a class="btn" id="stu" target="_blank" rel="noopener">Mở trang sinh viên</a><button class="btn" id="copy" type="button">Sao chép link</button></div>
+    <p class="note" id="cntP">Nhóm đã gửi bài: <span id="cnt">0</span></p>
+    <h2 style="margin-top:16px">Ghi nhớ</h2>
+    <ol class="note">
+      <li>Sinh viên quét QR, chọn số nhóm một lần, làm 4 bước; bài tự lưu lên lớp (biểu tượng “Đã lưu lên lớp ✓”).</li>
+      <li>Phút 0–6 không dùng AI; AI chỉ phản hồi sau khi nhóm đã có ý tưởng.</li>
+      <li>Ảnh: chụp phác thảo trên giấy hoặc tải ảnh AI tạo; không chụp mặt người, không dùng logo thật.</li>
+      <li>Không có mạng: sinh viên chọn “Làm ngoại tuyến”, hoặc giảng viên mở bản dự phòng một tệp trên máy chiếu.</li>
+      <li>Mọi số liệu FreshUp là Dữ liệu giả lập.</li>
+    </ol>
+  </div>
+  <div class="card qr">
+    <div class="code" id="big"></div>
+    <div id="qr" role="img" aria-label="Mã QR mở trang sinh viên"></div>
+    <p class="url" id="url"></p>
+  </div>
+</main>
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script>
+(function(){
+"use strict";
+function $(id){ return document.getElementById(id); }
+function clean(s){ return String(s || "").toUpperCase().replace(/[^A-Z0-9-]/g, "").slice(0, 20); }
+function gen(){ var a = "ABCDEFGHJKMNPQRSTUVWXYZ23456789", s = "B8-"; for (var i = 0; i < 4; i++) s += a[Math.floor(Math.random() * a.length)]; return s; }
+var code = RL.session();
+try { code = code || localStorage.getItem("rl-teacher-code") || ""; } catch(e) {}
+$("code").value = code || gen();
+function link(f){ return new URL(f + "?lop=" + encodeURIComponent(clean($("code").value)), location.href).href; }
+function show(){
+  var c = clean($("code").value); if (c.length < 2) return;
+  $("code").value = c;
+  try { localStorage.setItem("rl-teacher-code", c); } catch(e) {}
+  var u = link("index.html");
+  $("big").textContent = c; $("url").textContent = u;
+  $("wall").href = link("wall.html"); $("stu").href = u;
+  if (window.qrcode){ var q = qrcode(0, "M"); q.addData(u); q.make(); $("qr").innerHTML = q.createSvgTag({cellSize:8, margin:2, scalable:true}); }
+  else $("qr").innerHTML = '<p class="note">Không tải được thư viện QR. Hãy cho sinh viên gõ địa chỉ bên dưới.</p>';
+  count();
+}
+function count(){ RL.rows(clean($("code").value)).then(function(r){ $("cnt").textContent = r.length; }, function(){ $("cnt").textContent = "(không kết nối được)"; }); }
+$("gen").onclick = function(){ $("code").value = gen(); show(); };
+$("show").onclick = show;
+$("code").addEventListener("keydown", function(e){ if (e.key === "Enter") show(); });
+$("copy").onclick = function(){
+  var u = link("index.html"), b = this;
+  function ok(){ b.textContent = "Đã sao chép"; setTimeout(function(){ b.textContent = "Sao chép link"; }, 2000); }
+  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(u).then(ok, function(){}); else { window.prompt("Sao chép link:", u); }
+};
+show();
+setInterval(count, 10000);
+})();
+</script>
+</body>
+</html>
