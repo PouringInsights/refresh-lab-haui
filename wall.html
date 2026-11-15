@@ -67,6 +67,37 @@ td .mini img{width:64px;height:50px;object-fit:cover;border-radius:4px}
 .dec{margin-top:10px;padding:8px 10px;border-radius:8px;background:#EFFAF2;border-left:5px solid var(--ok)}
 .dec.key{background:var(--yellow-soft);border-left-color:var(--yellow)}
 .btn:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+/* ---- polish: projector legibility, one restrained system ---- */
+:root{--r:6px;--tint:#EEF2FA}
+::selection{background:var(--yellow);color:var(--navy)}
+header{border-bottom-width:3px;padding:16px 24px}
+header h1{font-weight:700;letter-spacing:-.015em}
+header h1 span{font-weight:800}
+.meta{font-weight:600;gap:16px}
+.live{border-radius:4px;font-weight:600}
+.grid{gap:20px;padding:24px;grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
+.card{border-radius:var(--r);border-color:#DCE2EC;transition:box-shadow .2s ease-out,transform .2s ease-out}
+.card:hover{box-shadow:0 6px 18px rgba(10,36,99,.14);transform:translateY(-2px)}
+.c-top{padding:8px 14px;font-weight:700;font-size:1.05rem}
+.c-body{padding:14px 16px}
+.c-name{font-size:1.5rem;letter-spacing:-.02em}
+.c-slo{font-style:normal;color:var(--muted);font-size:1.05rem;margin:4px 0 10px}
+.tag{background:transparent;border:1px solid var(--navy);font-weight:600;border-radius:4px}
+.c-body ol{font-size:1rem;line-height:1.4}
+.c-foot{font-size:.85rem;padding:6px 16px 12px}
+.cap{border-radius:4px;font-weight:600}
+.ask,.btn,.ask input{border-radius:var(--r)}
+.btn{font-weight:600;border-width:1.5px}
+dialog{border-radius:var(--r)}
+.d-head{border-bottom-width:3px}
+.d-vis img.main,.strip img{border-radius:4px}
+.diag{border-radius:4px;background:var(--tint)}
+.pitch{border:0;border-top:3px solid var(--yellow);border-radius:0;background:#FFFAEB}
+.dec{border-left:0;border-radius:4px;background:var(--tint)}
+.dec.key{background:#FFFAEB;outline:1.5px solid var(--yellow);outline-offset:-1.5px}
+th{font-weight:600}
+.btn{transition:background-color .15s ease-out}.btn:active{transform:translateY(1px)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;transform:none!important}}
 </style>
 </head>
 <body>
