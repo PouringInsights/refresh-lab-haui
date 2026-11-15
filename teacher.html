@@ -81,8 +81,8 @@ function $(id){ return document.getElementById(id); }
 function clean(s){ return String(s || "").toUpperCase().replace(/[^A-Z0-9-]/g, "").slice(0, 20); }
 function gen(){ var a = "ABCDEFGHJKMNPQRSTUVWXYZ23456789", s = "B8-"; for (var i = 0; i < 4; i++) s += a[Math.floor(Math.random() * a.length)]; return s; }
 var code = RL.session();
-try { code = code || localStorage.getItem("rl-teacher-code") || ""; } catch(e) {}
-$("code").value = code || gen();
+// default to the class code printed as QR on the slides; a new code only when the teacher asks for one
+$("code").value = code || "B8-HAUI";
 function link(f){ return new URL(f + "?lop=" + encodeURIComponent(clean($("code").value)), location.href).href; }
 function show(){
   var c = clean($("code").value); if (c.length < 2) return;
