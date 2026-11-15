@@ -140,12 +140,13 @@ if (!SES){
 }
 $("lop").textContent = "Lớp " + SES;
 
+function glabel(r){ var d = r.data || {}; return d.demo ? "Nhóm demo " + (d.demo_no || "") : "Nhóm " + r.group_no; }
 function card(r){
   var d = r.data || {}, m = mainPhoto(d), name = t(d, "a_ten") || "Chưa đặt tên", cat = RL.PROD[r.product] || "Chưa chọn ngành hàng";
   var img = m ? '<img alt="' + esc(RL.KIND[m.kind]) + '" src="' + esc(m.url) + '" loading="lazy"><span class="cap">' + esc(RL.KIND[m.kind]) + '</span>'
               : '<div class="ph" style="background:#0A2463;width:100%;height:100%;display:grid;place-items:center">' + esc(name) + '</div>';
   return '<button class="card" type="button" data-g="' + r.group_no + '">'
-    + '<div class="c-top"><span class="g">Nhóm ' + r.group_no + '</span><span>' + esc(cat) + '</span></div>'
+    + '<div class="c-top"><span class="g">' + esc(glabel(r)) + '</span><span>' + esc(cat) + '</span></div>'
     + '<div class="c-img">' + img + '</div>'
     + '<div class="c-body"><div class="c-name">' + esc(name) + '</div>'
     + (t(d, "h_thongdiep") ? '<div class="c-slo">“' + esc(t(d, "h_thongdiep")) + '”</div>' : '<div class="c-slo">(chưa có thông điệp)</div>')
@@ -175,7 +176,7 @@ function sheet(d){
 function detail(no){
   var r = ROWS.filter(function(x){ return x.group_no === no; })[0]; if (!r) return;
   var d = r.data || {}, m = mainPhoto(d), name = t(d, "a_ten") || "Chưa đặt tên";
-  $("dTitle").textContent = "Nhóm " + no + " · " + (RL.PROD[r.product] || "") + " · " + name;
+  $("dTitle").textContent = glabel(r) + " · " + (RL.PROD[r.product] || "") + " · " + name;
   var others = photos(d).filter(function(p){ return p !== m; });
   $("dBody").innerHTML = '<div class="d-body"><div class="d-vis">'
     + (m ? '<img class="main" alt="' + esc(RL.KIND[m.kind]) + '" src="' + esc(m.url) + '"><div><span class="tag">' + esc(RL.KIND[m.kind]) + '</span></div>' : "")
