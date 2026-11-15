@@ -261,7 +261,6 @@ input[type=number]:focus{border-color:var(--navy)}
     <div class="grid" id="gateGrid"></div>
   </div>
 </div></div>
-<div class="sample-bar" role="status">Đây là ví dụ mẫu giảng viên dùng để minh họa (Dữ liệu giả lập, không lưu lên lớp). Nhóm em bấm “Làm lại” để bắt đầu phiếu của mình.</div>
 <header class="top"><div class="wrap">
   <h1><span>Phiếu thiết kế sản phẩm</span> · Bài 8</h1>
   <p class="sub">Thử thách: Từ ý tưởng đến sản phẩm thực tế · Chính sách sản phẩm · Marketing căn bản</p>
@@ -269,7 +268,6 @@ input[type=number]:focus{border-color:var(--navy)}
     <span class="who" id="who"></span>
     <span class="sync" id="sync" role="status" aria-live="polite"></span>
     <button class="btn light" id="btnGroup" type="button">Đổi nhóm</button>
-    <button class="btn light" id="btnSample" type="button">Ví dụ mẫu</button>
     <button class="btn light" id="btnReset2" type="button">Làm lại</button>
   </div>
 </div></header>
@@ -586,54 +584,6 @@ function reset(){
 $("btnReset").addEventListener("click", reset);
 $("btnReset2").addEventListener("click", reset);
 
-/* ---------- sample: Nhóm 1 · Trà trái cây (Dữ liệu giả lập, no real brand, never saved) ---------- */
-var SAMPLE = {sp:"tra", nhom:"1 (mẫu)", f_giaidoan:"Giới thiệu",
-  a_nhom:"Nhóm 1 · Vườn Sớm", a_tv:"5 thành viên (ví dụ mẫu)", a_ten:"Trà ổi hồng sả chanh “Vườn Sớm”",
-  a_kh:"Sinh viên và nhân viên văn phòng trẻ 18–28 tuổi ở thành phố. Nhu cầu: giải khát buổi chiều, ít ngọt, vị trái cây tự nhiên, cầm theo tiện khi di chuyển.",
-  a_pl:["Hàng sử dụng ngắn hạn","Mua thường ngày","Mua ngẫu hứng"],
-  a_ly:"Uống một lần là hết, giá thấp, mua thường xuyên ở cửa hàng tiện lợi; nhiều người mua khi thấy trên kệ lạnh mà không lên kế hoạch trước.",
-  b_cotloi:"Giải khát nhanh, tỉnh táo nhẹ buổi chiều mà không thấy quá ngọt.",
-  b_ht_chatluong:"Trà xanh pha lạnh với ổi hồng và sả chanh; ít đường (dự kiến dưới 5 g/100 ml, cần kiểm nghiệm).",
-  b_ht_congdung:"Giải khát, dùng ngay, uống lạnh ngon hơn; nắp vặn đóng lại được.",
-  b_ht_kieudang:"Chai dáng thon 350 ml, cầm vừa tay, nhãn tông hồng – xanh lá.",
-  b_ht_nhanhieu:"Tên “Vườn Sớm”, biểu tượng mặt trời mọc sau lá trà.",
-  b_ht_baobi:"Chai PET trong để thấy màu trà hồng; lốc 4 chai quai giấy.",
-  b_bosung:"Mã QR trên nhãn: chơi thẻ tích điểm đổi chai miễn phí; điểm thu hồi vỏ chai tại căng tin trường đối tác.",
-  c_ten:"“Vườn Sớm”: gợi buổi sáng trong lành và nguyên liệu từ vườn, dễ đọc, dễ nhớ.",
-  c_dauhieu:"Biểu tượng mặt trời mọc sau lá trà; màu hồng ổi và xanh lá; chữ tròn, thân thiện.",
-  c_visao:"Người trẻ chuộng hình ảnh tự nhiên, nhẹ nhàng; màu hồng ổi hiếm gặp trên kệ trà nên dễ nhận ra.",
-  c_bienthe:"Chung một tên",
-  c_ly:"Dùng chung tên “Vườn Sớm” cho các vị để tiết kiệm chi phí quảng bá và tạo nhận biết nhanh. Cần tra cứu khả năng bảo hộ tên trước khi kinh doanh thật.",
-  d_tiepxuc:"Chai PET 350 ml dùng được cho thực phẩm, nắp vặn có vòng niêm phong.",
-  d_baove:"Màng co nhãn in toàn thân, chống trầy và che bớt ánh sáng.",
-  d_vanchuyen:"Thùng carton 24 chai có vách ngăn; lốc 4 chai quai giấy cho siêu thị.",
-  d_nhan:"Tên sản phẩm, thành phần, lượng đường, hạn dùng, cách bảo quản, mã QR, ký hiệu tái chế.",
-  d_vatlieu:"Chai PET trong, dáng thon 350 ml, màu hồng ổi – xanh lá, nắp vặn đóng lại được.",
-  d_chucnang:"Chai kín và màng co giữ trà không rò rỉ, hạn chế ánh sáng; màu hồng nổi bật trên kệ lạnh giúp nhận ra nhãn hiệu từ xa.",
-  d_moitruong:"Dự kiến dùng nhựa tái chế cho một phần thân chai và quai giấy thay màng co lốc. Cần kiểm chứng: tỷ lệ nhựa tái chế đạt chuẩn thực phẩm, chi phí.",
-  e_chungloai:"Trà đóng chai uống liền (đồ uống không cồn)",
-  e_mh1:"Trà ổi hồng sả chanh 350 ml", e_kb1:"Vị chủ đạo, ít ngọt",
-  e_mh2:"Trà vải hoa nhài 350 ml", e_kb2:"Hương hoa, hợp mùa hè",
-  e_mh3:"Trà ổi hồng không đường 500 ml", e_kb3:"Không đường, dung tích lớn",
-  e_rong:"1 chủng loại: trà trái cây đóng chai.", e_dai:"3 mặt hàng.", e_sau:"Vị ổi hồng có 2 phương án (350 ml ít ngọt, 500 ml không đường).", e_matdo:"Cao: cùng nguyên liệu nền, cùng kênh bán và cùng khách hàng.",
-  e_morong:"Mở rộng chiều sâu (thêm bản không đường) trước khi thêm vị mới, để giữ khách quan tâm sức khỏe và dùng chung dây chuyền.",
-  f_uutien:"Tạo nhận biết và cho dùng thử: phát mẫu tại trường đại học, trưng bày kệ lạnh cửa hàng tiện lợi gần trường, giữ giá dễ thử.",
-  f_dauhieu:"Doanh số tăng chậm hoặc giảm nhiều kỳ dù vẫn khuyến mãi; khách mua lại ít hơn; đối thủ ra vị tương tự giá thấp hơn.",
-  f_caitien:"Đổi mới vị theo mùa (bản giới hạn), chuyển sang lốc giấy, thêm bản không đường 500 ml.",
-  g_prompt:"Ảnh quảng cáo chân thực: chai trà 350 ml màu hồng ổi, nhãn chữ “Vườn Sớm”, biểu tượng mặt trời mọc sau lá trà, nền quầy gỗ sáng, lát ổi hồng và sả bên cạnh, ánh sáng tự nhiên; không người, không logo thật.",
-  g_dieuchinh:"AI gợi ý ghi “thanh lọc cơ thể, đẹp da”: nhóm bỏ vì chưa có căn cứ. AI đặt tên tiếng Anh: nhóm đổi sang tên tiếng Việt cho gần khách hàng.",
-  g_giadinh:"Lượng đường, hạn dùng, chi phí chai tái chế, mức giá và nhu cầu thực tế của sinh viên đều là giả định cần kiểm chứng.",
-  h_1:"Lợi ích cơ bản: giải khát, tỉnh táo nhẹ mà không ngọt gắt. Lợi ích gia tăng: tích điểm đổi chai, thu hồi vỏ tại trường.",
-  h_2:"Vị ổi hồng sả chanh lạ mà quen, ít ngọt hơn trà đóng chai thông thường, màu hồng dễ nhận ra trên kệ.",
-  h_3:"Vị theo mùa, thẻ tích điểm và điểm thu hồi vỏ chai giữ khách quay lại.",
-  h_thongdiep:"Vườn Sớm: tươi như buổi sáng, ngọt vừa đủ cho buổi chiều.",
-  i_1:"1.25", i_2:"1.5", i_3:"1.25", i_4:"1.25", i_5:"0.75", i_6:"1.25", i_7:"1", i_tong:"8.25",
-  photos:[]};
-$("btnSample").addEventListener("click", function(){
-  var hasWork = FIELDS.some(function(k){ return v(k); }) || S.photos.length;
-  if (hasWork && !S.sample && !confirm("Ví dụ mẫu sẽ thay nội dung trên máy này (bài đã lưu lên lớp vẫn giữ nguyên; ví dụ mẫu không được lưu lên lớp). Tiếp tục?")) return;
-  S = Object.assign(blank(), JSON.parse(JSON.stringify(SAMPLE)), {sample:true, step:S.step}); persist(); syncInputs(); render();
-});
 
 /* ---------- gate: class code + group number ---------- */
 function showGate(){
