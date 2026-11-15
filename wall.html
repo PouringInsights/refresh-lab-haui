@@ -131,6 +131,7 @@ function detail(no){
     + (m ? '<img class="main" alt="' + esc(RL.KIND[m.kind]) + '" src="' + esc(m.url) + '"><div><span class="tag">' + esc(RL.KIND[m.kind]) + '</span></div>' : "")
     + '<h2 style="color:#0A2463;margin:6px 0 0">' + esc(name) + '</h2>' + (t(d, "thongdiep") ? '<p><i>“' + esc(t(d, "thongdiep")) + '”</i></p>' : "")
     + (others.length ? '<div class="strip">' + thumbs(others) + '</div>' : "")
+    + (t(d, "prompt") ? '<p style="text-align:left;font-size:.9rem;white-space:pre-wrap;border:1px solid #D5DBE5;border-radius:8px;padding:8px"><b>Câu lệnh nhóm dùng với AI:</b> ' + esc(t(d, "prompt")) + '</p>' : "")
     + (t(d, "camket") ? '<p style="text-align:left"><b>Cam kết bền vững:</b> ' + esc(t(d, "camket")) + '</p>' : "")
     + '</div><div><div class="diag"><b>Tái sinh từ:</b> ' + esc(RL.PROD[r.product] || "…") + ' · <b>Giai đoạn PLC:</b> ' + esc(RL.PLC[d.plc] || "…") + '<br><b>Nỗi đau lớn nhất:</b> ' + esc(t(d, "noidau") || "…") + '</div>'
     + '<table><thead><tr><th>Cấp độ</th><th>Hiện trạng cũ</th><th>Ý tưởng cải tiến mới</th></tr></thead><tbody>'
