@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RE-FRESH Lab · Phòng thí nghiệm tái sinh sản phẩm</title>
-<meta name="description" content="Bài 8 · Chính sách sản phẩm · Product Canvas tái sinh sản phẩm FreshUp (Dữ liệu giả lập)">
+<title>Phiếu thiết kế sản phẩm · Bài 8</title>
+<meta name="description" content="Bài 8 · Chính sách sản phẩm · Phiếu thiết kế sản phẩm: từ ý tưởng đến sản phẩm thực tế">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800&display=swap">
 <style>
@@ -140,8 +140,8 @@ footer.foot{color:var(--muted);font-size:.85rem;text-align:center;padding:10px 1
 @media print{
   @page{size:A4 landscape;margin:8mm}
   body{background:#fff;font-size:9.5pt}
-  header.top,nav.steps,.no-print,details.guide,.panel:not(#step3),footer.foot,.sample-bar,.timer,.gate{display:none!important}
-  #step3{display:block!important}
+  header.top,nav.steps,.no-print,details.guide,.panel:not(#step5),footer.foot,.sample-bar,.timer,.gate{display:none!important}
+  #step5{display:block!important}
   .wrap{max-width:none;padding:0}
   .poster,.poster *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .p-body{grid-template-columns:.8fr 1.5fr!important;padding:8px 12px;gap:10px}
@@ -215,25 +215,56 @@ footer.foot{font-size:.8rem}
 .pick button:hover,.radios label:hover{border-color:#9AA6BC}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 @media (max-width:420px){nav.steps button{font-size:.82rem;padding:6px 4px}}
+/* ---- product design sheet (phiếu A–I) ---- */
+nav.steps{grid-template-columns:repeat(5,1fr)}
+input[type=number]{width:100%;min-height:44px;padding:8px 10px;border:1.5px solid var(--line);border-radius:var(--r);font:inherit;color:var(--ink);background:#fff;font-variant-numeric:tabular-nums}
+input[type=number]:focus{border-color:var(--navy)}
+.radios.ck{grid-template-columns:1fr 1fr}
+@media (min-width:600px){.radios.ck{grid-template-columns:repeat(3,1fr)}}
+.radios.ck label{font-weight:500;min-height:44px}
+.radios label.fixed{cursor:default;border-color:var(--navy);background:var(--tint)}
+.ftbl{border-collapse:collapse;width:100%;margin:4px 0 12px}
+.ftbl th,.ftbl td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+.ftbl thead th{background:var(--navy);color:#fff;font-weight:600;font-size:.9rem}
+.ftbl tbody th{background:var(--tint);color:var(--navy);font-weight:600;width:34%;font-size:.92rem}
+.ftbl tbody th label{font-weight:600}
+.ftbl textarea,.ftbl input[type=text]{min-height:44px}
+.ftbl .num{width:3em;text-align:center;font-weight:700;color:var(--navy)}
+.ftbl td.max{width:5.5em;text-align:center;font-variant-numeric:tabular-nums}
+.ftbl td.pts{width:6.5em}
+.ftbl tr.total th,.ftbl tr.total td{background:var(--yellow-soft);font-weight:800;color:var(--navy)}
+@media (max-width:599px){
+  .ftbl.stack thead{display:none}
+  .ftbl.stack,.ftbl.stack tbody,.ftbl.stack tr,.ftbl.stack th,.ftbl.stack td{display:block;width:100%}
+  .ftbl.stack tr{margin-bottom:8px}
+  .ftbl.stack tbody th{border-bottom:0}
+}
+.cat{margin-bottom:6px}
+.pick button[disabled]{opacity:.45;cursor:not-allowed}
+.gate .grid button small{display:block;font-size:.68rem;font-weight:600;line-height:1.15}
+.ai-note{font-size:.85rem;color:var(--muted);border-top:1px solid var(--line);padding-top:8px;margin-top:4px}
+.p-tbl.two td:nth-child(2){color:var(--ink);width:auto}
+.p-tbl.two td{white-space:pre-line}
+.p-msg{font-size:1.15em;font-weight:700;color:var(--navy);margin:2px 0 4px}
 </style>
 </head>
 <body>
 <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gateT"><div class="box">
-  <h2 id="gateT">RE-FRESH Lab</h2>
+  <h2 id="gateT">Phiếu thiết kế sản phẩm</h2>
   <div id="gateCode">
     <p>Nhập mã lớp giảng viên chiếu trên màn hình (hoặc quét mã QR).</p>
     <div class="field"><label for="codeIn">Mã lớp</label><input type="text" id="codeIn" autocomplete="off" maxlength="20"></div>
     <div class="actions"><button class="btn yellow" id="codeGo" type="button">Vào lớp</button><button class="btn light" id="codeOff" type="button">Làm ngoại tuyến (không lưu lên lớp)</button></div>
   </div>
   <div id="gateGroup">
-    <p>Lớp <b id="gateLop"></b>. Chọn <b>số nhóm</b> của em (chỉ chọn một lần; ô xám là nhóm đã có bài).</p>
+    <p>Lớp <b id="gateLop"></b>. Chọn <b>số nhóm</b> của em (chỉ chọn một lần; ô xám là nhóm đã có bài). Nhóm 1–4 làm đúng ngành hàng được phân công; nhóm 5–8 tự chọn ngành hàng ở Bước 1.</p>
     <div class="grid" id="gateGrid"></div>
   </div>
 </div></div>
-<div class="sample-bar" role="status">Đây là ví dụ mẫu giảng viên dùng để minh họa. Nhóm em bấm “Làm lại” để bắt đầu bài của mình.</div>
+<div class="sample-bar" role="status">Đây là ví dụ mẫu giảng viên dùng để minh họa (Dữ liệu giả lập, không lưu lên lớp). Nhóm em bấm “Làm lại” để bắt đầu phiếu của mình.</div>
 <header class="top"><div class="wrap">
-  <h1><span>RE-FRESH Lab</span> · Phòng thí nghiệm tái sinh sản phẩm</h1>
-  <p class="sub">Product Canvas · Bài 8 Chính sách sản phẩm · Công ty CP Nước giải khát FreshUp (Dữ liệu giả lập)</p>
+  <h1><span>Phiếu thiết kế sản phẩm</span> · Bài 8</h1>
+  <p class="sub">Thử thách: Từ ý tưởng đến sản phẩm thực tế · Chính sách sản phẩm · Marketing căn bản</p>
   <div class="toolbar">
     <span class="who" id="who"></span>
     <span class="sync" id="sync" role="status" aria-live="polite"></span>
@@ -245,85 +276,45 @@ footer.foot{font-size:.8rem}
 
 <main class="wrap">
   <nav class="steps" role="tablist" aria-label="Các bước">
-    <button role="tab" data-step="1" aria-selected="true">1 · Canvas</button>
-    <button role="tab" data-step="2" aria-selected="false">2 · AI và quyết định</button>
-    <button role="tab" data-step="3" aria-selected="false">3 · Poster</button>
+    <button role="tab" data-step="1" aria-selected="true">1 · A–B</button>
+    <button role="tab" data-step="2" aria-selected="false">2 · C–E</button>
+    <button role="tab" data-step="3" aria-selected="false">3 · F–G</button>
+    <button role="tab" data-step="4" aria-selected="false">4 · H–I</button>
+    <button role="tab" data-step="5" aria-selected="false">5 · Poster</button>
   </nav>
 
   <details class="guide no-print">
     <summary>Hướng dẫn giảng viên</summary>
     <div class="in">
-      <p><b>20 phút:</b> 0–6 nhóm tự điền Canvas (không dùng AI) · 6–14 nhóm tự viết câu lệnh, dùng ChatGPT tạo ảnh sản phẩm · 14–18 ghi điều đã sửa và điểm không làm theo AI · 18–20 poster, thuyết minh 90 giây.</p>
-      <p><b>Không có thiết bị:</b> nhóm điền phiếu giấy và chụp lại; hoặc giảng viên nhập hộ 1–2 nhóm trên máy chiếu.</p>
-      <p><b>AI có trách nhiệm:</b> ý tưởng là của nhóm; AI chỉ dựng hình. Không logo hay thương hiệu thật, không ảnh người thật; ghi rõ “Ảnh do AI tạo”. Mọi số liệu FreshUp là giả lập.</p>
+      <p><b>30 phút:</b> 0–3 phân công (tạo ý tưởng, kiểm tra khái niệm, dựng ảnh, nộp phiếu, trình bày) · 3–15 sáng tạo ý tưởng và tạo ảnh bằng ChatGPT · 15–25 phân tích, đối chiếu khái niệm, chỉnh sửa · 25–30 gửi ảnh và hoàn thiện phiếu. Sau đó một nhóm trình bày 60 giây, các nhóm khác phản biện.</p>
+      <p><b>Không có thiết bị:</b> nhóm điền phiếu giấy và chụp lại; hoặc giảng viên nhập hộ trên máy chiếu.</p>
+      <p><b>AI có trách nhiệm:</b> nhóm tự viết prompt trên ChatGPT; trang này không gợi ý nội dung. Thành phần, công dụng, an toàn, thị trường do AI gợi ý là giả định cần kiểm chứng. Không logo hay thương hiệu thật, không ảnh người thật; ghi rõ “Ảnh do AI tạo”.</p>
     </div>
   </details>
 
-  <!-- STEP 1 -->
   <section class="panel active" id="step1" role="tabpanel" aria-label="Bước 1">
     <div class="card">
-      <h2>Sản phẩm được chọn cải tiến</h2>
-      <p class="rule">Bước này không dùng AI. Viết ngắn, bằng ý của nhóm.</p>
-      <div class="pick" id="pick" role="group" aria-label="Chọn sản phẩm"></div>
-      <div id="dossier"></div>
+      <h2>Ngành hàng của nhóm</h2>
+      <div class="pick cat" id="pick" role="group" aria-label="Chọn ngành hàng"></div>
+      <p class="note" id="catNote"></p>
     </div>
-    <div class="card">
-      <h2>Phần 1 · Chẩn đoán</h2>
-      <div class="field"><span class="lbl" id="plcLbl">Sản phẩm đang ở giai đoạn nào của chu kỳ sống?</span>
-        <div class="radios" role="radiogroup" aria-labelledby="plcLbl" id="plc"></div></div>
-      <div class="field"><label for="noidau">“Nỗi đau” lớn nhất của khách hàng hiện tại</label><textarea id="noidau" data-k="noidau"></textarea></div>
-    </div>
-    <div class="card">
-      <h2>Phần 2 · Cải tiến 3 cấp độ sản phẩm và 3 lớp bao bì</h2>
-      <div class="lvl"><h3>1. Lợi ích cốt lõi <small>(khách thực sự mua giải pháp gì?)</small></h3>
-        <div class="row2"><div class="field"><label for="o_cot">Hiện trạng cũ</label><textarea class="old" id="o_cot" data-k="o_cot"></textarea></div>
-        <div class="field"><label for="n_cot">Ý tưởng mới</label><textarea id="n_cot" data-k="n_cot"></textarea></div></div></div>
-      <div class="lvl"><h3>2. Sản phẩm thực tế <small>(chất lượng, tính năng, kiểu dáng, nhãn hiệu)</small></h3>
-        <div class="row2"><div class="field"><label for="o_thuc">Hiện trạng cũ</label><textarea class="old" id="o_thuc" data-k="o_thuc"></textarea></div>
-        <div class="field"><label for="n_thuc">Ý tưởng mới</label><textarea id="n_thuc" data-k="n_thuc"></textarea></div></div></div>
-      <div class="lvl"><h3>3. Sản phẩm gia tăng <small>(dịch vụ, bảo hành, tiện ích đi kèm)</small></h3>
-        <div class="row2"><div class="field"><label for="o_gt">Hiện trạng cũ</label><textarea class="old" id="o_gt" data-k="o_gt"></textarea></div>
-        <div class="field"><label for="n_gt">Ý tưởng mới</label><textarea id="n_gt" data-k="n_gt"></textarea></div></div></div>
-      <div class="lvl"><h3>4. Các lớp bao bì</h3>
-        <div class="field"><label for="o_bb">Hiện trạng cũ</label><textarea class="old" id="o_bb" data-k="o_bb"></textarea></div>
-        <div class="field"><label for="n_bb1">Bao bì trong (mới)</label><input type="text" id="n_bb1" data-k="n_bb1"></div>
-        <div class="field"><label for="n_bb2">Bao bì ngoài (mới)</label><input type="text" id="n_bb2" data-k="n_bb2"></div>
-        <div class="field"><label for="n_bb3">Bao bì vận chuyển (mới)</label><input type="text" id="n_bb3" data-k="n_bb3"></div></div>
-      <div class="row2">
-        <div class="field"><label for="ten">Tên sản phẩm mới</label><input type="text" id="ten" data-k="ten" maxlength="40"></div>
-        <div class="field"><label for="thongdiep">Câu thông điệp</label><input type="text" id="thongdiep" data-k="thongdiep" maxlength="80"></div>
-      </div>
-    </div>
-    <div class="nextbar"><span></span><button class="btn primary" data-go="2" type="button">Tiếp: AI và quyết định →</button></div>
+    <div data-form="1"></div>
+    <div class="nextbar"><span></span><button class="btn primary" data-go="2" type="button">Tiếp: C–E →</button></div>
   </section>
-
-  <!-- STEP 2 -->
   <section class="panel" id="step2" role="tabpanel" aria-label="Bước 2">
-    <div class="card">
-      <h2>Phần 3 · Diện mạo sản phẩm mới</h2>
-      <p class="rule">Nhóm tự viết câu lệnh và dùng ChatGPT (hoặc Gemini, Copilot) để tạo ảnh sản phẩm từ ý tưởng ở Bước 1.</p>
-      <div class="field"><label for="prompt">Câu lệnh (prompt) nhóm đã dùng với ChatGPT</label><textarea id="prompt" data-k="prompt" style="min-height:96px"></textarea></div>
-      <div class="field"><span class="lbl">Ảnh sản phẩm do AI tạo <span class="note">(và ảnh chụp phác thảo trên giấy, nếu có)</span></span>
-        <div class="ph" data-slot="look"></div>
-        <p class="note">Ảnh đầu tiên là hình chính trên poster. Không chụp mặt người.</p></div>
-    </div>
-    <div class="card">
-      <h2>Nhóm quyết định</h2>
-      <div class="field"><label for="dasua">Chúng em đã sửa… (sau khi xem kết quả AI)</label><textarea id="dasua" data-k="dasua"></textarea></div>
-      <div class="field must"><label for="khongtheo">Chúng em không làm theo AI ở điểm… vì… <span class="req">BẮT BUỘC</span></label>
-        <textarea id="khongtheo" data-k="khongtheo" aria-required="true"></textarea></div>
-    </div>
-    <div class="card">
-      <h2>Phần 4 · Thuyết minh 90 giây</h2>
-      <div class="field"><label for="pitch1">1. Chúng tôi thay đổi điều gì?</label><textarea id="pitch1" data-k="pitch1"></textarea></div>
-      <div class="field"><label for="pitch2">2. Giá trị khác biệt duy nhất (điểm chạm mới)?</label><textarea id="pitch2" data-k="pitch2"></textarea></div>
-      <div class="field"><label for="pitch3">3. Mục tiêu kéo dài chu kỳ sống?</label><textarea id="pitch3" data-k="pitch3"></textarea></div>
-    </div>
-    <div class="nextbar"><button class="btn" data-go="1" type="button">← Canvas</button><button class="btn primary" data-go="3" type="button">Xem poster →</button></div>
+    <div data-form="2"></div>
+    <div class="nextbar"><button class="btn" data-go="1" type="button">← A–B</button><button class="btn primary" data-go="3" type="button">Tiếp: F–G →</button></div>
+  </section>
+  <section class="panel" id="step3" role="tabpanel" aria-label="Bước 3">
+    <div data-form="3"></div>
+    <div class="nextbar"><button class="btn" data-go="2" type="button">← C–E</button><button class="btn primary" data-go="4" type="button">Tiếp: H–I →</button></div>
+  </section>
+  <section class="panel" id="step4" role="tabpanel" aria-label="Bước 4">
+    <div data-form="4"></div>
+    <div class="nextbar"><button class="btn" data-go="3" type="button">← F–G</button><button class="btn primary" data-go="5" type="button">Xem poster →</button></div>
   </section>
 
-  <!-- STEP 3 -->
-  <section class="panel" id="step3" role="tabpanel" aria-label="Bước 3">
+  <section class="panel" id="step5" role="tabpanel" aria-label="Bước 5">
     <div class="actions no-print">
       <button class="btn primary" id="btnPrint" type="button">In</button>
       <button class="btn yellow" id="btnFull" type="button">Toàn màn hình</button>
@@ -331,28 +322,23 @@ footer.foot{font-size:.8rem}
     </div>
     <p class="missing no-print" id="missingNote"></p>
     <div class="poster" id="poster">
-      <div class="p-head"><span>RE-FRESH Lab · Bài 8</span>
-        <span class="timer" id="timer"><output id="tOut">1:30</output><button class="btn" id="tBtn" type="button">Bấm giờ 90 giây</button></span>
+      <div class="p-head"><span>Phiếu thiết kế sản phẩm · Bài 8</span>
+        <span class="timer" id="timer"><output id="tOut">1:00</output><button class="btn" id="tBtn" type="button">Bấm giờ 60 giây</button></span>
         <span class="grp" id="ppGroup"></span></div>
       <div class="p-body">
         <div class="p-visual">
           <div id="ppVisual"></div>
           <div class="p-name" id="ppName"></div>
-          <p class="p-slogan" id="ppSlogan"></p>
           <div id="ppBadges"></div>
           <div class="p-prompt" id="ppPrompt"></div>
         </div>
         <div>
-          <div class="p-diag"><b>Tái sinh từ:</b> <span id="ppFrom"></span> · <b>Giai đoạn PLC:</b> <span id="ppPlc"></span><br><b>Nỗi đau lớn nhất:</b> <span id="ppPain"></span></div>
-          <table class="p-tbl"><thead><tr><th>Cấp độ</th><th>Hiện trạng cũ</th><th>Ý tưởng mới</th></tr></thead><tbody id="ppRows"></tbody></table>
-          <div class="p-pitch"><b>Thuyết minh 90 giây</b><ol><li id="pp1"></li><li id="pp2"></li><li id="pp3"></li></ol></div>
-          <div class="p-dec">
-            <div><b>Chúng em đã sửa:</b> <span id="ppSua"></span></div>
-            <div class="key"><b>Chúng em không làm theo AI:</b> <span id="ppKhong"></span></div>
-          </div>
+          <div class="p-diag"><b>Ngành hàng:</b> <span id="ppCat"></span><br><b>Khách hàng mục tiêu:</b> <span id="ppKh"></span></div>
+          <table class="p-tbl two"><thead><tr><th>Yếu tố</th><th>Nhóm đề xuất</th></tr></thead><tbody id="ppRows"></tbody></table>
+          <div class="p-pitch"><b>Thuyết minh 60 giây</b><div class="p-msg" id="ppMsg"></div><ol><li id="pp1"></li><li id="pp2"></li><li id="pp3"></li></ol></div>
         </div>
       </div>
-      <div class="p-foot"><span>Công ty CP Nước giải khát FreshUp · Dự án RE-FRESH 2026 · Dữ liệu giả lập</span><span>Marketing căn bản · HaUI</span></div>
+      <div class="p-foot"><span id="ppNote"></span><span>Marketing căn bản · HaUI</span></div>
     </div>
   </section>
 </main>
@@ -360,60 +346,95 @@ footer.foot{font-size:.8rem}
 
 <script src="config.js"></script>
 <script>
+/* Data keys saved in refresh_lab.data (product column = sp):
+   sp (tra|mypham|banhtrungthu|caphe), nhom, lop, sample, _t, photos[{url,slot:"sp",kind:"ai"|"sketch",t}]
+   A a_nhom a_tv a_ten a_kh a_pl[] a_ly · B b_cotloi b_ht_chatluong b_ht_congdung b_ht_kieudang b_ht_nhanhieu b_ht_baobi b_bosung
+   C c_ten c_dauhieu c_visao c_bienthe c_ly · D d_tiepxuc d_baove d_vanchuyen d_nhan d_vatlieu d_chucnang d_moitruong
+   E e_chungloai e_mh1 e_kb1 e_mh2 e_kb2 e_mh3 e_kb3 e_rong e_dai e_sau e_matdo e_morong
+   F f_giaidoan ("Giới thiệu", fixed) f_uutien f_dauhieu f_caitien · G g_prompt g_dieuchinh g_giadinh
+   H h_1 h_2 h_3 h_thongdiep · I i_1..i_7 (points as text) i_tong. Schema: RL.SHEET in config.js. */
 (function(){
 "use strict";
-var PRODUCTS = {
-  matcha:{code:"01", name:"Trà xanh hòa tan “Matcha Ice”", short:"Matcha Ice", tag:"Dòng sản phẩm truyền thống", pack:"goi", color:"#5B8C3A",
-    en:"instant matcha green tea powder drink",
-    desc:"Dòng sản phẩm chủ lực từ những năm đầu thành lập công ty, dạng gói bột hòa tan hương matcha vị ngọt đậm.",
-    cols:["Chỉ số (3 năm gần nhất)","Năm 2024","Năm 2025","Dự phóng 2026"],
-    rows:[["Doanh thu (tỷ đồng)","45.0","42.0","36.5 (-13%)"],["Tốc độ tăng trưởng thị trường chung","+5%","+2%","-1% (thị trường đã bão hòa cao)"],["Lợi nhuận gộp (% trên doanh thu)","32%","25%","18% (chi phí khuyến mãi để giữ hàng tồn kho tăng mạnh)"],["Chi phí marketing / doanh thu","10%","15%","22% (phải tát cạn ngân sách để giữ kệ siêu thị)"]],
-    voc:[["Khách hàng siêu thị","Vị quá ngọt, nhiều đường hóa học, không hợp với xu hướng sống khỏe hiện nay. Bao bì túi zip nhựa cũ kỹ, hay bị vón cục khi ẩm."],["Đại lý phân phối","Sản phẩm bị các đối thủ trà đóng chai không độ lấn át hoàn toàn. Đề nghị chiết khấu cao hơn mới tiếp tục trưng bày."]],
-    q:"Sản phẩm này đang nằm ở giai đoạn nào của chu kỳ sống? Việc cố gắng bơm thêm tiền quảng cáo có cứu vãn được không hay cần chiến lược thu hoạch/tái sinh?",
-    old:{cot:"Đồ uống matcha pha nhanh, tiện lợi.",thuc:"Bột hòa tan hương matcha, vị ngọt đậm; khách chê nhiều đường hóa học, hay vón cục khi ẩm.",gt:"Khuyến mãi, chiết khấu cao để giữ kệ siêu thị.",bb:"Túi zip nhựa kiểu cũ, hay bị vón cục khi ẩm."}},
-  detox:{code:"02", name:"Nước ép trái cây tươi “Tropical Detox”", short:"Tropical Detox", tag:"Dòng sản phẩm mới ra mắt", pack:"thuytinh", color:"#F28C28",
-    en:"cold-pressed tropical fruit juice",
-    desc:"Nước ép trái cây mix công nghệ ép lạnh (cold-pressed), giữ nguyên dưỡng chất, không chất bảo quản, hạn sử dụng ngắn (7 ngày), nhắm vào dân văn phòng trẻ.",
-    cols:["Chỉ số (6 tháng qua)","Tháng 1 (ra mắt)","Tháng 3","Tháng 6 (hiện tại)"],
-    rows:[["Doanh thu (triệu đồng)","200","850","2.100 (+140% so với tháng trước)"],["Tốc độ tăng trưởng thị trường chung","+25%","+28%","+30% (nhu cầu đồ uống healthy bùng nổ)"],["Tỷ lệ khách hàng mua lại","15%","40%","62%"],["Chi phí marketing / doanh thu","45% (chạy thử nghiệm)","30%","20% (tối ưu hiệu quả chuyển đổi)"]],
-    voc:[["Khách hàng","Vị rất tươi, ngon như trái cây thật, rất thích thiết kế chai thủy tinh tối giản. Tuy nhiên, giá khá cao (45.000đ/chai) và khó mua vì chỉ bán ở vài quận trung tâm TP.HCM/Hà Nội. Hạn sử dụng quá ngắn nên mua trữ trong tủ lạnh khó."],["Hệ thống cửa hàng tiện lợi","Sản phẩm bán rất chạy vào khung giờ sáng và trưa, hàng thường xuyên hết sớm trước 12h trưa."]],
-    q:"Sản phẩm này đang ở giai đoạn nào? Thách thức lớn nhất lúc này là gì (quảng cáo nhận biết hay tối ưu chuỗi cung ứng, mở rộng kênh phân phối và cải tiến bao bì giữ lạnh)?",
-    old:{cot:"Nước ép tươi giữ nguyên dưỡng chất, cho lối sống khỏe của dân văn phòng trẻ.",thuc:"Ép lạnh, không chất bảo quản, hạn dùng 7 ngày, chai thủy tinh tối giản, giá 45.000đ/chai.",gt:"Chỉ bán ở vài quận trung tâm TP.HCM/Hà Nội; hàng thường hết trước 12h trưa.",bb:"Chai thủy tinh tối giản; hồ sơ chưa nói đến bao bì giữ lạnh."}},
-  energy:{code:"03", name:"Nước uống thể thao bù khoáng “Energy Z”", short:"Energy Z", tag:"Dòng sản phẩm đang tăng trưởng nóng", pack:"thethao", color:"#1F6FB2",
-    en:"electrolyte sports drink with vitamin B",
-    desc:"Nước khoáng thể thao bổ sung điện giải và vitamin B, nhắm vào giới trẻ chơi thể thao, gym, chạy bộ.",
-    cols:["Chỉ số (1 năm qua)","Quý III/2025","Quý IV/2025","Quý I/2026","Quý II/2026 (hiện tại)"],
-    rows:[["Doanh thu (tỷ đồng)","5.0","9.5","16.0","24.5 (+53%)"],["Thị phần trong phân khúc","4%","8%","14%","22% (đang bám sát đối thủ dẫn đầu 28%)"],["Lợi nhuận gộp (% trên doanh thu)","28%","35%","40%","42% (đạt hiệu quả nhờ quy mô sản xuất lớn)"],["Số khiếu nại chất lượng/tháng","5","12","35","80 (chủ yếu: nắp chai khó mở khi tay dính mồ hôi, vỏ chai quá trơn)"]],
-    voc:[["Khách hàng (cộng đồng runner/gymmer)","Nước uống vị ngon, đã khát, bù điện giải rất tốt khi tập nặng. Nhưng chai thể thao mà cầm nắm bị trơn tay lúc ra mồ hôi là điểm trừ lớn. Nắp chai thiết kế ren xoáy cũ rất khó mở nhanh bằng một tay khi đang chạy."],["Đối thủ cạnh tranh","3 thương hiệu lớn đang ráo riết tung ra các dòng sản phẩm tương tự với mức giá rẻ hơn 10%."]],
-    q:"Sản phẩm đang tăng trưởng nóng, doanh thu cao nhưng bắt đầu xuất hiện “nỗi đau” về bao bì/trải nghiệm. Nhóm cần làm gì để bảo vệ thị phần trước đối thủ?",
-    old:{cot:"Bù điện giải, đã khát khi tập nặng.",thuc:"Nước khoáng thể thao có điện giải và vitamin B, vị ngon; vỏ chai trơn tay khi ra mồ hôi.",gt:"Hồ sơ chưa mô tả dịch vụ đi kèm (nhóm tự nhận định).",bb:"Chai trơn tay khi ra mồ hôi; nắp ren xoáy kiểu cũ khó mở bằng một tay."}},
-  bubble:{code:"04", name:"Trà đen macchiato “Bubble Tea Box”", short:"Bubble Tea Box", tag:"Dòng sản phẩm đang chững lại", pack:"lon", color:"#6B3E26",
-    en:"ready-to-drink black milk tea with a cheese-foam macchiato top",
-    desc:"Trà sữa đóng lon pha sẵn kết hợp lớp kem phô mai macchiato bên trên (công nghệ van chống tràn độc quyền), ra mắt được 1,5 năm.",
-    cols:["Chỉ số","6 tháng đầu ra mắt","6 tháng tiếp theo","6 tháng gần nhất (hiện tại)"],
-    rows:[["Doanh thu (tỷ đồng)","12.0","18.0","18.5 (+2,7%, tăng trưởng gần như bằng 0)"],["Tốc độ tăng trưởng thị trường chung","+15%","+10%","+5% (cơn sốt trà sữa đóng lon hạ nhiệt)"],["Tỷ lệ khách hàng mua lại","55%","35%","20% (khách dùng thử rồi bỏ đi)"],["Tỷ lệ hàng tồn kho tại kho phân phối","5%","12%","28% (hàng chậm luân chuyển)"]],
-    voc:[["Khách hàng","Ý tưởng hay, lớp kem macchiato béo ngậy uống lạ miệng lúc đầu. Nhưng uống hết 1/3 lon là bắt đầu ngấy, vị quá ngọt gắt. Hơn nữa, giá 22.000đ/lon bị đắt so với việc mua một ly trà sữa tươi bên ngoài."],["Siêu thị và cửa hàng tiện lợi","Sản phẩm không còn độ hot, khách trẻ không còn hào hứng tìm kiếm trên kệ như trước."]],
-    q:"Sản phẩm đang rơi vào bẫy bão hòa sớm hoặc chững lại trước khi kịp bùng nổ. Nhóm cần giải pháp cải tiến nào về công thức (sản phẩm cốt lõi) hay dung tích/bao bì để vực dậy doanh số?",
-    old:{cot:"Trà sữa macchiato lạ miệng, tiện uống ngay.",thuc:"Trà đen và kem phô mai macchiato, van chống tràn; uống hết 1/3 lon là ngấy, vị quá ngọt gắt.",gt:"Giá 22.000đ/lon, khách thấy đắt hơn ly trà sữa tươi.",bb:"Lon pha sẵn, một cỡ."}}
-};
-var PLC = [["gioithieu","Giới thiệu"],["tangtruong","Tăng trưởng"],["baohoa","Bão hòa"],["suythoai","Suy thoái"]];
-var FIELDS = ["noidau","o_cot","n_cot","o_thuc","n_thuc","o_gt","n_gt","o_bb","n_bb1","n_bb2","n_bb3","ten","thongdiep","prompt","dasua","khongtheo","pitch1","pitch2","pitch3"];
+var MAXG = 8;
 var SES = (window.RL && RL.session()) || "", OFF = false;
 try { OFF = !SES && sessionStorage.getItem("rl-off") === "1"; } catch(e) {}
-var KEY = "haui-b08-refresh-v2" + (SES ? ":" + SES : ""), GKEY = "rl-group:" + SES, GROUP = 0, PEND = [];
+var KEY = "haui-b08-phieu-v1" + (SES ? ":" + SES : ""), GKEY = "rl-group:" + SES, GROUP = 0, PEND = [];
 try { GROUP = SES ? (+localStorage.getItem(GKEY) || 0) : 0; } catch(e) {}
-function blank(){ return {sp:"", plc:"", photos:[], sample:false}; }
+function blank(){ return {sp:"", f_giaidoan:"Giới thiệu", photos:[], sample:false}; }
 var S = blank();
 try { var raw = localStorage.getItem(KEY); if (raw) S = Object.assign(blank(), JSON.parse(raw)); } catch(e) {}
 if (!Array.isArray(S.photos)) S.photos = [];
 function $(id){ return document.getElementById(id); }
 function each(sel, fn){ Array.prototype.forEach.call(document.querySelectorAll(sel), fn); }
 function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
-function v(k){ return (S[k] || "").toString().trim(); }
+function v(k){ var x = S[k]; return Array.isArray(x) ? x.join(", ") : (x == null ? "" : String(x)).trim(); }
 function or(s, d){ return s ? s : d; }
-function P(){ return PRODUCTS[S.sp] || null; }
 function setText(id, s){ $(id).textContent = s; }
-function plcLabel(){ var x = PLC.filter(function(p){ return p[0] === S.plc; })[0]; return x ? x[1] : "…"; }
+
+/* ---------- form from RL.SHEET ---------- */
+var FIELDS = [], SCORES = [];
+function ta(k, lbl){ return '<textarea id="' + k + '" data-k="' + k + '"' + (lbl ? ' aria-label="' + esc(lbl) + '"' : "") + '></textarea>'; }
+function fieldHTML(f){
+  if (f.h) return '<p class="rule">' + esc(f.h) + '</p>';
+  if (f.ph) return '<div class="field"><span class="lbl">Ảnh sản phẩm do AI tạo <span class="note">(và ảnh chụp phác thảo trên giấy, nếu có)</span></span><div class="ph" data-slot="' + f.ph + '"></div>'
+    + '<p class="note">Ảnh AI đầu tiên là hình chính trên poster. Không chụp mặt người, không dùng logo thật.</p></div>';
+  if (f.tbl){ f.rows.forEach(function(r){ FIELDS.push(r[0]); });
+    return '<table class="ftbl stack"><thead><tr><th>' + esc(f.tbl[0]) + '</th><th>' + esc(f.tbl[1]) + '</th></tr></thead><tbody>'
+      + f.rows.map(function(r){ return '<tr><th scope="row"><label for="' + r[0] + '">' + esc(r[1]) + '</label></th><td>' + ta(r[0]) + '</td></tr>'; }).join("") + '</tbody></table>'; }
+  if (f.tbl2){ f.rows.forEach(function(r){ FIELDS.push(r[0], r[1]); });
+    return '<div class="tblwrap"><table class="ftbl"><thead><tr><th>' + f.tbl2.map(esc).join("</th><th>") + '</th></tr></thead><tbody>'
+      + f.rows.map(function(r, i){ return '<tr><td class="num">' + (i + 1) + '</td><td><input type="text" id="' + r[0] + '" data-k="' + r[0] + '" aria-label="Mặt hàng ' + (i + 1) + '"></td><td><input type="text" id="' + r[1] + '" data-k="' + r[1] + '" aria-label="Điểm khác biệt ' + (i + 1) + '"></td></tr>'; }).join("") + '</tbody></table></div>'; }
+  if (f.score){ SCORES = f.score; f.score.forEach(function(r){ FIELDS.push(r[0]); });
+    return '<table class="ftbl"><thead><tr><th>Tiêu chí</th><th>Tối đa</th><th>Nhóm tự chấm</th></tr></thead><tbody>'
+      + f.score.map(function(r){ return '<tr><th scope="row"><label for="' + r[0] + '">' + esc(r[1]) + '</label></th><td class="max">' + RL.num(r[2].toFixed(1)) + '</td><td class="pts"><input type="number" inputmode="decimal" min="0" max="' + r[2] + '" step="0.25" id="' + r[0] + '" data-k="' + r[0] + '" data-max="' + r[2] + '"></td></tr>'; }).join("")
+      + '<tr class="total"><th scope="row">Tổng</th><td class="max">10,0</td><td class="pts"><output id="iTong">0</output></td></tr></tbody></table>'; }
+  var lb = '<span class="lbl" id="l_' + f.k + '">' + esc(f.l) + '</span>';
+  if (f.t === "fix") return '<div class="field">' + lb + '<div class="radios"><label class="fixed"><input type="checkbox" checked disabled> ' + esc(f.v) + '</label></div></div>';
+  if (f.t === "ck" || f.t === "rd"){ FIELDS.push(f.k);
+    return '<div class="field">' + lb + '<div class="radios ck" role="group" aria-labelledby="l_' + f.k + '">' + f.o.map(function(o){
+      return '<label><input type="' + (f.t === "ck" ? "checkbox" : "radio") + '" name="' + f.k + '" value="' + esc(o) + '" data-k="' + f.k + '"> ' + esc(o) + '</label>'; }).join("") + '</div></div>'; }
+  FIELDS.push(f.k);
+  return '<div class="field"><label for="' + f.k + '">' + esc(f.l) + '</label>' + (f.t === "in" ? '<input type="text" id="' + f.k + '" data-k="' + f.k + '">' : ta(f.k)) + '</div>';
+}
+function buildForm(){
+  RL.SHEET.forEach(function(s){
+    var box = document.querySelector('[data-form="' + s.step + '"]');
+    box.insertAdjacentHTML("beforeend", '<div class="card" id="sec' + s.id + '"><h2>' + esc(s.t) + '</h2>' + s.f.map(fieldHTML).join("")
+      + (s.id === "G" || s.id === "I" ? '<p class="ai-note">Ghi nhớ: ' + esc(RL.NOTE) + '</p>' : "") + '</div>');
+  });
+  document.querySelector("main").addEventListener("input", onField);
+  document.querySelector("main").addEventListener("change", onField);
+  Object.keys(RL.PROD).forEach(function(id){
+    var b = document.createElement("button"); b.type = "button"; b.dataset.sp = id;
+    var g = Object.keys(RL.GROUP_PROD).filter(function(n){ return RL.GROUP_PROD[n] === id; })[0];
+    b.innerHTML = "<b>" + esc(RL.PROD[id]) + "</b><small>Nhóm " + g + (MAXG > 4 ? " (hoặc nhóm 5–8 tự chọn)" : "") + "</small>";
+    b.addEventListener("click", function(){ S.sp = id; save(); render(); });
+    $("pick").appendChild(b);
+  });
+}
+function onField(e){
+  var el = e.target, k = el.dataset && el.dataset.k; if (!k) return;
+  if (el.type === "checkbox"){
+    S[k] = Array.prototype.filter.call(document.querySelectorAll('input[data-k="' + k + '"]'), function(i){ return i.checked; }).map(function(i){ return i.value; });
+  } else if (el.type === "radio"){ if (el.checked) S[k] = el.value; }
+  else if (el.type === "number"){
+    if (e.type !== "change" && el.value === "") { S[k] = ""; }
+    var x = parseFloat(el.value), mx = +el.dataset.max;
+    if (!isNaN(x)){ if (x > mx) { x = mx; el.value = mx; } if (x < 0) { x = 0; el.value = 0; } S[k] = String(x); } else S[k] = "";
+    S.i_tong = total();
+  } else S[k] = el.value;
+  save(); render();
+}
+function total(){ var t = 0; SCORES.forEach(function(r){ var x = parseFloat(S[r[0]]); if (!isNaN(x)) t += Math.min(x, r[2]); }); return String(Math.round(t * 100) / 100); }
+function syncInputs(){
+  each("[data-k]", function(el){
+    var k = el.dataset.k, x = S[k];
+    if (el.type === "checkbox") el.checked = Array.isArray(x) && x.indexOf(el.value) >= 0;
+    else if (el.type === "radio") el.checked = x === el.value;
+    else el.value = x == null ? "" : x;
+  });
+}
+function lockCat(){ var c = SES && RL.GROUP_PROD[GROUP]; if (c && S.sp !== c && !S.sample){ S.sp = c; return true; } return false; }
 
 /* ---------- save + sync ---------- */
 function LOCAL(){ return !SES || !GROUP || S.sample; }
@@ -454,6 +475,7 @@ function pull(){
     if (row && row.data && !S._dirty && !S.sample && (!S._t || Date.parse(row.updated_at) > S._t)){
       S = Object.assign(blank(), row.data, {step:S.step}); if (!Array.isArray(S.photos)) S.photos = []; persist(); syncInputs(); render();
     }
+    if (lockCat()) save();
     doSync(); flushUploads();
   }, showBadge);
 }
@@ -473,7 +495,7 @@ function buildPhotos(){
     ph.innerHTML = '<div class="phb"><label class="btn primary">Ảnh sản phẩm do AI tạo<input type="file" accept="image/*" data-kind="ai"></label>'
       + '<label class="btn">Chụp phác thảo trên giấy<input type="file" accept="image/*" capture="environment" data-kind="sketch"></label></div><div class="thumbs"></div>';
     Array.prototype.forEach.call(ph.querySelectorAll("input"), function(inp){
-      inp.addEventListener("change", function(){ var f = inp.files && inp.files[0]; if (f) addPhoto(f, ph.dataset.slot, inp.dataset.kind); inp.value = ""; });
+      inp.addEventListener("change", function(e){ e.stopPropagation(); var f = inp.files && inp.files[0]; if (f) addPhoto(f, ph.dataset.slot, inp.dataset.kind); inp.value = ""; });
     });
     ph.querySelector(".thumbs").addEventListener("click", function(e){
       var b = e.target.closest("button[data-i]"); if (!b) return;
@@ -489,78 +511,47 @@ function renderPhotos(){
     ph.querySelector(".thumbs").innerHTML = html;
   });
 }
-function slotPhotos(slot){ return S.photos.filter(function(p){ return p.slot === slot; }); }
 function imgTag(p, cls){ return '<img' + (cls ? ' class="' + cls + '"' : "") + ' alt="' + esc(RL.KIND[p.kind]) + '" title="' + esc(RL.KIND[p.kind]) + '" src="' + esc(p.url) + '">'; }
 
-/* ---------- form ---------- */
-function syncInputs(){
-  FIELDS.forEach(function(k){ var el = $(k); if (el) el.value = S[k] || ""; });
-  each("#plc input", function(i){ i.checked = i.value === S.plc; });
-}
-function build(){
-  FIELDS.forEach(function(k){ var el = $(k); el.addEventListener("input", function(){ S[k] = el.value; save(); render(); }); });
-  Object.keys(PRODUCTS).forEach(function(id){
-    var d = PRODUCTS[id], b = document.createElement("button"); b.type = "button"; b.dataset.sp = id;
-    b.innerHTML = "<b>" + d.code + " · " + esc(d.short) + "</b><small>" + esc(d.tag) + "</small>";
-    b.addEventListener("click", function(){ choose(id); });
-    $("pick").appendChild(b);
-  });
-  PLC.forEach(function(x){
-    var l = document.createElement("label");
-    l.innerHTML = '<input type="radio" name="plc" value="' + x[0] + '"> ' + x[1];
-    l.querySelector("input").addEventListener("change", function(){ S.plc = x[0]; save(); render(); });
-    $("plc").appendChild(l);
-  });
-}
-function choose(id){
-  var d = PRODUCTS[id], prev = P();
-  [["o_cot","cot"],["o_thuc","thuc"],["o_gt","gt"],["o_bb","bb"]].forEach(function(x){
-    if (!v(x[0]) || (prev && v(x[0]) === prev.old[x[1]])) S[x[0]] = d.old[x[1]];
-  });
-  S.sp = id; save(); syncInputs(); render();
-}
-function dossierHTML(d){
-  if (!d) return '<p class="note">Chọn một sản phẩm để xem hồ sơ kinh doanh.</p>';
-  return '<details class="dossier" open><summary>Hồ sơ ' + esc(d.short) + ' <span class="badge">Dữ liệu giả lập</span></summary><div class="in">'
-    + '<p>' + esc(d.desc) + '</p>'
-    + '<div class="tblwrap"><table class="data"><thead><tr>' + d.cols.map(function(c){ return "<th>" + esc(c) + "</th>"; }).join("") + '</tr></thead><tbody>'
-    + d.rows.map(function(r){ return "<tr>" + r.map(function(c){ return "<td>" + esc(c) + "</td>"; }).join("") + "</tr>"; }).join("") + '</tbody></table></div>'
-    + '<b>Tiếng nói khách hàng</b><ul class="voc">' + d.voc.map(function(x){ return "<li><b>" + esc(x[0]) + ":</b> “" + esc(x[1]) + "”</li>"; }).join("") + '</ul>'
-    + '<p class="q">Câu hỏi chẩn đoán: ' + esc(d.q) + '</p></div></details>';
-}
-
 /* ---------- render ---------- */
-var lastSp = null;
+function lines(pairs){ return pairs.filter(function(p){ return v(p[1]); }).map(function(p){ return p[0] + ": " + v(p[1]); }).join("\n") || "…"; }
 function render(){
-  var d = P();
   document.body.classList.toggle("is-sample", !!S.sample);
-  each(".pick button", function(b){ b.setAttribute("aria-pressed", b.dataset.sp === S.sp ? "true" : "false"); });
-  if (lastSp !== S.sp){ $("dossier").innerHTML = dossierHTML(d); lastSp = S.sp; }
+  var fixedCat = SES && !S.sample && RL.GROUP_PROD[GROUP];
+  each(".pick button", function(b){ b.setAttribute("aria-pressed", b.dataset.sp === S.sp ? "true" : "false"); b.disabled = !!fixedCat && b.dataset.sp !== fixedCat; });
+  setText("catNote", fixedCat ? "Nhóm " + GROUP + " làm ngành hàng " + RL.PROD[fixedCat] + " theo phân công." : (S.sp ? "" : "Chọn ngành hàng của nhóm."));
   renderPhotos();
-  var look = slotPhotos("look"), main = look[0] || S.photos[0];
+  setText("iTong", RL.num(total()));
+  var all = S.photos.filter(function(p){ return p.slot === "sp"; }), main = all.filter(function(p){ return p.kind === "ai"; })[0] || all[0];
   setText("ppGroup", "Nhóm " + or(GROUP ? String(GROUP) : v("nhom"), "…") + (SES ? " · Lớp " + SES : ""));
   $("ppVisual").innerHTML = main ? imgTag(main, "main") + '<br><span class="p-cap">' + esc(RL.KIND[main.kind]) + '</span>'
-      + (look.length > 1 ? '<div class="p-strip">' + look.filter(function(p){ return p !== main; }).map(function(p){ return imgTag(p); }).join("") + "</div>" : "")
+      + (all.length > 1 ? '<div class="p-strip">' + all.filter(function(p){ return p !== main; }).map(function(p){ return imgTag(p); }).join("") + "</div>" : "")
     : '<div class="p-noimg">Chưa có ảnh sản phẩm</div>';
-  setText("ppName", or(v("ten"), d ? d.short : "Tên sản phẩm"));
-  setText("ppSlogan", v("thongdiep") ? "“" + v("thongdiep") + "”" : "");
-  var bd = ['<span class="p-badge">Dữ liệu giả lập</span>'];
+  setText("ppName", or(v("a_ten"), "Tên sản phẩm"));
+  var bd = [];
   if (S.photos.some(function(p){ return p.kind === "ai"; })) bd.push('<span class="p-badge">Ảnh do AI tạo</span>');
   if (S.photos.some(function(p){ return p.kind === "sketch"; })) bd.push('<span class="p-badge">Có phác thảo tay</span>');
-  if (S.sample) bd.push('<span class="p-badge">VÍ DỤ MẪU</span>');
+  if (S.sample) bd.push('<span class="p-badge">VÍ DỤ MẪU · Dữ liệu giả lập</span>');
   $("ppBadges").innerHTML = bd.join(" ");
-  $("ppPrompt").style.display = v("prompt") ? "" : "none";
-  setText("ppPrompt", "Câu lệnh nhóm dùng: " + v("prompt"));
-  setText("ppFrom", d ? d.short : "…"); setText("ppPlc", plcLabel()); setText("ppPain", or(v("noidau"), "…"));
-  var bb = ["Trong: " + or(v("n_bb1"), "…"), "Ngoài: " + or(v("n_bb2"), "…"), "Vận chuyển: " + or(v("n_bb3"), "…")].join("; ");
-  var rows = [["Lợi ích cốt lõi","o_cot",v("n_cot"),"cot"],["Sản phẩm thực tế","o_thuc",v("n_thuc"),"thuc"],["Sản phẩm gia tăng","o_gt",v("n_gt"),"gt"],["Các lớp bao bì","o_bb",bb,"bb"]];
-  $("ppRows").innerHTML = rows.map(function(r){ var ph = slotPhotos(r[3]);
-    return "<tr><td>" + r[0] + "</td><td>" + esc(or(v(r[1]), "…")) + "</td><td>" + esc(or(r[2], "…"))
-      + (ph.length ? '<div class="mini">' + ph.map(function(p){ return imgTag(p); }).join("") + "</div>" : "") + "</td></tr>"; }).join("");
-  setText("pp1", or(v("pitch1"), "…")); setText("pp2", or(v("pitch2"), "…")); setText("pp3", or(v("pitch3"), "…"));
-  setText("ppSua", or(v("dasua"), "…"));
-  setText("ppKhong", or(v("khongtheo"), "CÒN THIẾU: nhóm phải ghi điểm không làm theo AI và lý do."));
-  setText("missingNote", v("khongtheo") ? "" : "Còn thiếu dòng bắt buộc: “Chúng em không làm theo AI ở điểm… vì…” (Bước 2).");
+  $("ppPrompt").style.display = v("g_prompt") ? "" : "none";
+  setText("ppPrompt", "Prompt chính nhóm dùng: " + v("g_prompt"));
+  setText("ppCat", or(RL.PROD[S.sp], "…")); setText("ppKh", or(v("a_kh"), "…"));
+  var rows = [
+    ["Cốt lõi", or(v("b_cotloi"), "…")],
+    ["Hiện thực", lines([["Chất lượng","b_ht_chatluong"],["Công dụng","b_ht_congdung"],["Kiểu dáng","b_ht_kieudang"],["Nhãn hiệu","b_ht_nhanhieu"],["Bao bì","b_ht_baobi"]])],
+    ["Bổ sung", or(v("b_bosung"), "…")],
+    ["Nhãn hiệu", lines([["Tên","c_ten"],["Dấu hiệu","c_dauhieu"],["Biến thể","c_bienthe"]])],
+    ["Bao bì 3 lớp", lines([["Tiếp xúc","d_tiepxuc"],["Bảo vệ","d_baove"],["Vận chuyển","d_vanchuyen"]])],
+    ["Danh mục", [["e_mh1","e_kb1"],["e_mh2","e_kb2"],["e_mh3","e_kb3"]].filter(function(r){ return v(r[0]); }).map(function(r){ return "• " + v(r[0]) + (v(r[1]) ? " (" + v(r[1]) + ")" : ""); }).join("\n") || "…"]
+  ];
+  $("ppRows").innerHTML = rows.map(function(r){ return "<tr><td>" + r[0] + "</td><td>" + esc(r[1]) + "</td></tr>"; }).join("");
+  setText("ppMsg", v("h_thongdiep") ? "“" + v("h_thongdiep") + "”" : "");
+  setText("pp1", or(v("h_1"), "…")); setText("pp2", or(v("h_2"), "…")); setText("pp3", or(v("h_3"), "…"));
+  setText("ppNote", RL.NOTE + (S.sample ? " · Dữ liệu giả lập" : ""));
+  var empty = RL.SHEET.filter(function(s){ return !s.f.some(function(f){
+    var ks = f.k && f.t !== "fix" ? [f.k] : (f.tbl || f.tbl2 ? [].concat.apply([], f.rows) : (f.score ? f.score.map(function(r){ return r[0]; }) : []));
+    return ks.some(function(k){ return FIELDS.indexOf(k) >= 0 && v(k); }) || (f.ph && all.length); }); }).map(function(s){ return s.id; });
+  setText("missingNote", empty.length ? "Phần còn trống: " + empty.join(", ") + "." : "");
   showBadge();
 }
 
@@ -573,7 +564,7 @@ function go(n){
 document.querySelector("nav.steps").addEventListener("click", function(e){ var b = e.target.closest("button"); if (b) go(+b.dataset.step); });
 each("[data-go]", function(b){ b.addEventListener("click", function(){ go(+b.dataset.go); }); });
 
-/* ---------- poster buttons + 90 s timer ---------- */
+/* ---------- poster buttons + 60 s timer ---------- */
 $("btnPrint").addEventListener("click", function(){ window.print(); });
 $("btnFull").addEventListener("click", function(){
   var p = $("poster");
@@ -581,26 +572,67 @@ $("btnFull").addEventListener("click", function(){
   if (p.requestFullscreen) p.requestFullscreen().catch(function(){});
   else if (p.webkitRequestFullscreen) p.webkitRequestFullscreen();
 });
-var tLeft = 90, tId = null;
+var tLeft = 60, tId = null;
 function tShow(){ setText("tOut", tLeft > 0 ? Math.floor(tLeft/60) + ":" + ("0" + tLeft%60).slice(-2) : "Hết giờ"); $("timer").classList.toggle("over", tLeft <= 10); }
 $("tBtn").addEventListener("click", function(){
-  if (tId){ clearInterval(tId); tId = null; tLeft = 90; tShow(); this.textContent = "Bấm giờ 90 giây"; return; }
-  tLeft = 90; tShow(); this.textContent = "Dừng / đặt lại";
-  tId = setInterval(function(){ tLeft--; tShow(); if (tLeft <= 0){ clearInterval(tId); tId = null; $("tBtn").textContent = "Bấm giờ 90 giây"; } }, 1000);
+  if (tId){ clearInterval(tId); tId = null; tLeft = 60; tShow(); this.textContent = "Bấm giờ 60 giây"; return; }
+  tLeft = 60; tShow(); this.textContent = "Dừng / đặt lại";
+  tId = setInterval(function(){ tLeft--; tShow(); if (tLeft <= 0){ clearInterval(tId); tId = null; $("tBtn").textContent = "Bấm giờ 60 giây"; } }, 1000);
 });
 function reset(){
   if (!confirm("Xóa nội dung của nhóm và làm lại từ đầu?")) return;
-  S = blank(); PEND = []; save(); syncInputs(); render(); go(1);
+  S = blank(); PEND = []; lockCat(); save(); syncInputs(); render(); go(1);
 }
 $("btnReset").addEventListener("click", reset);
 $("btnReset2").addEventListener("click", reset);
 
-/* ---------- sample (Energy Z, from nhom-mau.json) ---------- */
-var SAMPLE = {"sp":"energy","plc":"tangtruong","nhom":"Mẫu","noidau":"Chai trơn tay khi ra mồ hôi, nắp ren khó mở bằng một tay khi đang chạy; khiếu nại tăng từ 5 lên 80 mỗi tháng; ba đối thủ ra hàng tương tự rẻ hơn 10%.","o_cot":"Bù nước, điện giải khi tập","n_cot":"Bù khoáng mà không phải dừng nhịp tập","o_thuc":"Chai trơn, nắp ren vặn","n_thuc":"Thân chai eo, vân lục giác chống trượt; nắp bật một tay có van chống tràn; giữ công thức vị cũ","o_gt":"Không có","n_gt":"Quét mã trên nhãn ra bảng tính lượng nước cần uống theo buổi tập; điểm đổi vỏ tại phòng gym đối tác","o_bb":"Chai PET, màng co, thùng carton","n_bb1":"Chai PET có 50% nhựa tái chế (rPET), nắp bật một tay","n_bb2":"Lốc 6 chai bằng quai giấy thay màng co","n_bb3":"Thùng carton tái chế","ten":"Energy Z","thongdiep":"Chắc tay. Bứt tốc.","camket":"Dùng chai rPET 50% nhựa tái chế; điểm đổi vỏ tại phòng gym đối tác; đếm và công bố số vỏ thu hồi mỗi quý (giả lập).","dasua":"Thêm van chống tràn; ghi rõ lượng đường trên nhãn; bảng tính lượng nước mở bằng trình duyệt, không cần cài ứng dụng; bỏ chữ \"100% thân thiện\".","khongtheo":"AI gợi ý giảm giá 10% để bằng đối thủ. Nhóm không làm theo: sản phẩm đang tăng trưởng, lãi gộp 42% là nguồn tiền đổi khuôn chai; khách phàn nàn về chai và nắp, không phàn nàn về giá. Nhóm cạnh tranh bằng trải nghiệm, giữ giá cũ.","pitch1":"Chúng tôi thay đổi: sửa đúng hai lời phàn nàn lớn nhất, chai bám chắc tay ướt và nắp mở bằng một ngón cái.","pitch2":"Khác biệt duy nhất: chai thể thao duy nhất trong phân khúc dùng được trọn vẹn khi đang chạy. Khẩu hiệu: \"Chắc tay. Bứt tốc.\"","pitch3":"Kéo dài chu kỳ sống: giữ khách runner/gym trước đối thủ giá rẻ, mở thêm nhóm đạp xe và cầu lông; đưa khiếu nại về dưới 10 mỗi tháng.","photos":[{"url":"bao-bi-mau-1.jpg","slot":"look","kind":"ai","t":1},{"url":"bao-bi-mau-2.jpg","slot":"look","kind":"ai","t":2},{"url":"bao-bi-mau-3.jpg","slot":"look","kind":"ai","t":3}]};
+/* ---------- sample: Nhóm 1 · Trà trái cây (Dữ liệu giả lập, no real brand, never saved) ---------- */
+var SAMPLE = {sp:"tra", nhom:"1 (mẫu)", f_giaidoan:"Giới thiệu",
+  a_nhom:"Nhóm 1 · Vườn Sớm", a_tv:"5 thành viên (ví dụ mẫu)", a_ten:"Trà ổi hồng sả chanh “Vườn Sớm”",
+  a_kh:"Sinh viên và nhân viên văn phòng trẻ 18–28 tuổi ở thành phố. Nhu cầu: giải khát buổi chiều, ít ngọt, vị trái cây tự nhiên, cầm theo tiện khi di chuyển.",
+  a_pl:["Hàng sử dụng ngắn hạn","Mua thường ngày","Mua ngẫu hứng"],
+  a_ly:"Uống một lần là hết, giá thấp, mua thường xuyên ở cửa hàng tiện lợi; nhiều người mua khi thấy trên kệ lạnh mà không lên kế hoạch trước.",
+  b_cotloi:"Giải khát nhanh, tỉnh táo nhẹ buổi chiều mà không thấy quá ngọt.",
+  b_ht_chatluong:"Trà xanh pha lạnh với ổi hồng và sả chanh; ít đường (dự kiến dưới 5 g/100 ml, cần kiểm nghiệm).",
+  b_ht_congdung:"Giải khát, dùng ngay, uống lạnh ngon hơn; nắp vặn đóng lại được.",
+  b_ht_kieudang:"Chai dáng thon 350 ml, cầm vừa tay, nhãn tông hồng – xanh lá.",
+  b_ht_nhanhieu:"Tên “Vườn Sớm”, biểu tượng mặt trời mọc sau lá trà.",
+  b_ht_baobi:"Chai PET trong để thấy màu trà hồng; lốc 4 chai quai giấy.",
+  b_bosung:"Mã QR trên nhãn: chơi thẻ tích điểm đổi chai miễn phí; điểm thu hồi vỏ chai tại căng tin trường đối tác.",
+  c_ten:"“Vườn Sớm”: gợi buổi sáng trong lành và nguyên liệu từ vườn, dễ đọc, dễ nhớ.",
+  c_dauhieu:"Biểu tượng mặt trời mọc sau lá trà; màu hồng ổi và xanh lá; chữ tròn, thân thiện.",
+  c_visao:"Người trẻ chuộng hình ảnh tự nhiên, nhẹ nhàng; màu hồng ổi hiếm gặp trên kệ trà nên dễ nhận ra.",
+  c_bienthe:"Chung một tên",
+  c_ly:"Dùng chung tên “Vườn Sớm” cho các vị để tiết kiệm chi phí quảng bá và tạo nhận biết nhanh. Cần tra cứu khả năng bảo hộ tên trước khi kinh doanh thật.",
+  d_tiepxuc:"Chai PET 350 ml dùng được cho thực phẩm, nắp vặn có vòng niêm phong.",
+  d_baove:"Màng co nhãn in toàn thân, chống trầy và che bớt ánh sáng.",
+  d_vanchuyen:"Thùng carton 24 chai có vách ngăn; lốc 4 chai quai giấy cho siêu thị.",
+  d_nhan:"Tên sản phẩm, thành phần, lượng đường, hạn dùng, cách bảo quản, mã QR, ký hiệu tái chế.",
+  d_vatlieu:"Chai PET trong, dáng thon 350 ml, màu hồng ổi – xanh lá, nắp vặn đóng lại được.",
+  d_chucnang:"Chai kín và màng co giữ trà không rò rỉ, hạn chế ánh sáng; màu hồng nổi bật trên kệ lạnh giúp nhận ra nhãn hiệu từ xa.",
+  d_moitruong:"Dự kiến dùng nhựa tái chế cho một phần thân chai và quai giấy thay màng co lốc. Cần kiểm chứng: tỷ lệ nhựa tái chế đạt chuẩn thực phẩm, chi phí.",
+  e_chungloai:"Trà đóng chai uống liền (đồ uống không cồn)",
+  e_mh1:"Trà ổi hồng sả chanh 350 ml", e_kb1:"Vị chủ đạo, ít ngọt",
+  e_mh2:"Trà vải hoa nhài 350 ml", e_kb2:"Hương hoa, hợp mùa hè",
+  e_mh3:"Trà ổi hồng không đường 500 ml", e_kb3:"Không đường, dung tích lớn",
+  e_rong:"1 chủng loại: trà trái cây đóng chai.", e_dai:"3 mặt hàng.", e_sau:"Vị ổi hồng có 2 phương án (350 ml ít ngọt, 500 ml không đường).", e_matdo:"Cao: cùng nguyên liệu nền, cùng kênh bán và cùng khách hàng.",
+  e_morong:"Mở rộng chiều sâu (thêm bản không đường) trước khi thêm vị mới, để giữ khách quan tâm sức khỏe và dùng chung dây chuyền.",
+  f_uutien:"Tạo nhận biết và cho dùng thử: phát mẫu tại trường đại học, trưng bày kệ lạnh cửa hàng tiện lợi gần trường, giữ giá dễ thử.",
+  f_dauhieu:"Doanh số tăng chậm hoặc giảm nhiều kỳ dù vẫn khuyến mãi; khách mua lại ít hơn; đối thủ ra vị tương tự giá thấp hơn.",
+  f_caitien:"Đổi mới vị theo mùa (bản giới hạn), chuyển sang lốc giấy, thêm bản không đường 500 ml.",
+  g_prompt:"Ảnh quảng cáo chân thực: chai trà 350 ml màu hồng ổi, nhãn chữ “Vườn Sớm”, biểu tượng mặt trời mọc sau lá trà, nền quầy gỗ sáng, lát ổi hồng và sả bên cạnh, ánh sáng tự nhiên; không người, không logo thật.",
+  g_dieuchinh:"AI gợi ý ghi “thanh lọc cơ thể, đẹp da”: nhóm bỏ vì chưa có căn cứ. AI đặt tên tiếng Anh: nhóm đổi sang tên tiếng Việt cho gần khách hàng.",
+  g_giadinh:"Lượng đường, hạn dùng, chi phí chai tái chế, mức giá và nhu cầu thực tế của sinh viên đều là giả định cần kiểm chứng.",
+  h_1:"Lợi ích cơ bản: giải khát, tỉnh táo nhẹ mà không ngọt gắt. Lợi ích gia tăng: tích điểm đổi chai, thu hồi vỏ tại trường.",
+  h_2:"Vị ổi hồng sả chanh lạ mà quen, ít ngọt hơn trà đóng chai thông thường, màu hồng dễ nhận ra trên kệ.",
+  h_3:"Vị theo mùa, thẻ tích điểm và điểm thu hồi vỏ chai giữ khách quay lại.",
+  h_thongdiep:"Vườn Sớm: tươi như buổi sáng, ngọt vừa đủ cho buổi chiều.",
+  i_1:"1.25", i_2:"1.5", i_3:"1.25", i_4:"1.25", i_5:"0.75", i_6:"1.25", i_7:"1", i_tong:"8.25",
+  photos:[]};
 $("btnSample").addEventListener("click", function(){
-  var hasWork = S.sp || FIELDS.some(function(k){ return v(k); });
+  var hasWork = FIELDS.some(function(k){ return v(k); }) || S.photos.length;
   if (hasWork && !S.sample && !confirm("Ví dụ mẫu sẽ thay nội dung trên máy này (bài đã lưu lên lớp vẫn giữ nguyên; ví dụ mẫu không được lưu lên lớp). Tiếp tục?")) return;
-  S = Object.assign(blank(), SAMPLE, {sample:true, step:S.step, photos:(SAMPLE.photos || []).slice()}); persist(); syncInputs(); render();
+  S = Object.assign(blank(), JSON.parse(JSON.stringify(SAMPLE)), {sample:true, step:S.step}); persist(); syncInputs(); render();
 });
 
 /* ---------- gate: class code + group number ---------- */
@@ -610,7 +642,8 @@ function showGate(){
   if (SES && !GROUP){
     $("gateCode").style.display = "none"; $("gateGroup").style.display = ""; setText("gateLop", SES);
     var grid = $("gateGrid"); grid.innerHTML = "";
-    for (var i = 1; i <= 20; i++){ var b = document.createElement("button"); b.type = "button"; b.textContent = i; b.dataset.n = i; grid.appendChild(b); }
+    for (var i = 1; i <= MAXG; i++){ var b = document.createElement("button"); b.type = "button"; b.dataset.n = i;
+      b.innerHTML = i + "<small>" + esc(RL.PROD[RL.GROUP_PROD[i]] || "tự chọn") + "</small>"; grid.appendChild(b); }
     g.classList.add("show");
     RL.rows(SES).then(function(r){ r.forEach(function(row){ var b = grid.querySelector('[data-n="' + row.group_no + '"]'); if (b){ b.classList.add("taken"); b.setAttribute("aria-label", "Nhóm " + row.group_no + " (đã có bài)"); } }); }, function(){});
     return;
@@ -623,7 +656,8 @@ $("gateGrid").addEventListener("click", function(e){
   if (b.classList.contains("taken") && !confirm("Nhóm " + n + " đã có bài trên lớp. Em là thành viên nhóm " + n + " và muốn tiếp tục bài của nhóm?")) return;
   if (!confirm("Xác nhận: em thuộc nhóm " + n + "?")) return;
   GROUP = n; try { localStorage.setItem(GKEY, String(n)); } catch(err) {}
-  S._t = 0; showGate(); whoami(); render(); pull();
+  if (S.sample) S = blank();
+  S._t = 0; lockCat(); showGate(); whoami(); syncInputs(); render(); pull();
 });
 $("codeGo").addEventListener("click", function(){
   var c = $("codeIn").value.toUpperCase().replace(/[^A-Z0-9-]/g, "");
@@ -643,7 +677,7 @@ function whoami(){
   $("btnGroup").textContent = SES ? "Đổi nhóm" : "Nhập mã lớp";
 }
 
-buildPhotos(); build(); whoami(); syncInputs(); render(); go(S.step && S.step <= 3 ? S.step : 1); showGate(); pull();
+buildForm(); buildPhotos(); lockCat(); whoami(); syncInputs(); render(); go(S.step && S.step <= 5 ? S.step : 1); showGate(); pull();
 })();
 </script>
 </body>

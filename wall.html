@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tường triển lãm · RE-FRESH Lab</title>
+<title>Tường sản phẩm · Bài 8</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800&display=swap">
 <style>
@@ -97,18 +97,24 @@ dialog{border-radius:var(--r)}
 .dec.key{background:#FFFAEB;outline:1.5px solid var(--yellow);outline-offset:-1.5px}
 th{font-weight:600}
 .btn{transition:background-color .15s ease-out}.btn:active{transform:translateY(1px)}
+.c-slo{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+h3.sec{margin:14px 0 6px;color:var(--navy);font-size:1.05rem}
+h3.sec:first-child{margin-top:0}
+table.sheet td:first-child{width:38%}
+table.sheet td:nth-child(2){color:var(--ink);width:auto;white-space:pre-line}
+.note{font-size:.85rem;color:var(--muted)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;transform:none!important}}
 </style>
 </head>
 <body>
 <header>
-  <h1><span>RE-FRESH Lab</span> · Tường triển lãm</h1>
+  <h1><span>Tường sản phẩm</span> · Bài 8 Chính sách sản phẩm</h1>
   <div class="meta"><span id="lop"></span><span id="count"></span><span class="live" id="live">Đang kết nối…</span></div>
 </header>
 <main id="main"></main>
 <dialog id="dlg" aria-labelledby="dTitle">
   <div class="d-head"><b id="dTitle"></b>
-    <span class="timer" id="timer"><output id="tOut">1:30</output><button class="btn y" id="tBtn" type="button">Bấm giờ 90 giây</button></span>
+    <span class="timer" id="timer"><output id="tOut">1:00</output><button class="btn y" id="tBtn" type="button">Bấm giờ 60 giây</button></span>
     <button class="btn" id="dClose" type="button">Đóng (Esc)</button></div>
   <div id="dBody"></div>
 </dialog>
@@ -123,7 +129,9 @@ function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(
 function t(d, k){ return (d && d[k] ? String(d[k]) : "").trim(); }
 function safeUrl(u){ return /^https:\/\//.test(u || "") ? u : ""; }
 function photos(d, slot){ return ((d && d.photos) || []).filter(function(p){ return safeUrl(p.url) && (!slot || p.slot === slot); }); }
-function mainPhoto(d){ return photos(d, "look")[0] || photos(d)[0]; }
+function mainPhoto(d){ var a = photos(d); return a.filter(function(p){ return p.kind === "ai"; })[0] || a[0]; }
+function val(d, k){ var x = d[k]; return Array.isArray(x) ? x.join(", ") : t(d, k); }
+function num(x){ return x === "" || x == null ? "" : RL.num(x); }
 
 if (!SES){
   $("main").innerHTML = '<div class="ask"><h2>Nhập mã lớp</h2><input id="code" aria-label="Mã lớp" maxlength="20"><p><button class="btn y" id="go" type="button">Mở tường</button></p></div>';
@@ -133,45 +141,49 @@ if (!SES){
 $("lop").textContent = "Lớp " + SES;
 
 function card(r){
-  var d = r.data || {}, m = mainPhoto(d), name = t(d, "ten") || RL.PROD[r.product] || "Chưa đặt tên";
+  var d = r.data || {}, m = mainPhoto(d), name = t(d, "a_ten") || "Chưa đặt tên", cat = RL.PROD[r.product] || "Chưa chọn ngành hàng";
   var img = m ? '<img alt="' + esc(RL.KIND[m.kind]) + '" src="' + esc(m.url) + '" loading="lazy"><span class="cap">' + esc(RL.KIND[m.kind]) + '</span>'
-              : '<div class="ph" style="background:' + esc(/^#[0-9a-fA-F]{6}$/.test(d.mau || "") ? d.mau : "#0A2463") + ';width:100%;height:100%;display:grid;place-items:center">' + esc(name) + '</div>';
-  var p = ["pitch1","pitch2","pitch3"].map(function(k){ return t(d, k); });
+              : '<div class="ph" style="background:#0A2463;width:100%;height:100%;display:grid;place-items:center">' + esc(name) + '</div>';
   return '<button class="card" type="button" data-g="' + r.group_no + '">'
-    + '<div class="c-top"><span class="g">Nhóm ' + r.group_no + '</span><span>' + esc(RL.PROD[r.product] || "Chưa chọn sản phẩm") + '</span></div>'
+    + '<div class="c-top"><span class="g">Nhóm ' + r.group_no + '</span><span>' + esc(cat) + '</span></div>'
     + '<div class="c-img">' + img + '</div>'
-    + '<div class="c-body"><div class="c-name">' + esc(name) + '</div>' + (t(d, "thongdiep") ? '<div class="c-slo">“' + esc(t(d, "thongdiep")) + '”</div>' : "")
-    + (d.plc ? '<span class="tag">' + esc(RL.PLC[d.plc] || "") + '</span>' : "") + (t(d, "khongtheo") ? '<span class="tag">Có quyết định riêng</span>' : "")
-    + (p.some(Boolean) ? "<ol>" + p.map(function(x){ return "<li>" + esc(x || "…") + "</li>"; }).join("") + "</ol>" : "")
-    + '</div><div class="c-foot">Cập nhật ' + new Date(r.updated_at).toLocaleTimeString("vi-VN", {hour:"2-digit", minute:"2-digit"}) + ' · Dữ liệu giả lập</div></button>';
+    + '<div class="c-body"><div class="c-name">' + esc(name) + '</div>'
+    + (t(d, "h_thongdiep") ? '<div class="c-slo">“' + esc(t(d, "h_thongdiep")) + '”</div>' : '<div class="c-slo">(chưa có thông điệp)</div>')
+    + '</div><div class="c-foot">Cập nhật ' + new Date(r.updated_at).toLocaleTimeString("vi-VN", {hour:"2-digit", minute:"2-digit"}) + '</div></button>';
 }
 function draw(){
   $("count").textContent = ROWS.length + " nhóm";
-  $("main").innerHTML = '<div class="grid">' + (ROWS.length ? ROWS.map(card).join("") : '<div class="empty">Chưa có nhóm nào gửi bài. Bài sẽ hiện ở đây ngay khi các nhóm bắt đầu nhập.</div>') + '</div>';
+  $("main").innerHTML = '<div class="grid">' + (ROWS.length ? ROWS.map(card).join("") : '<div class="empty">Chưa có nhóm nào gửi phiếu. Bài sẽ hiện ở đây ngay khi các nhóm bắt đầu nhập.</div>') + '</div>';
   if (openNo) detail(openNo);
 }
 function thumbs(list){ return list.map(function(p){ return '<figure><img alt="' + esc(RL.KIND[p.kind]) + '" src="' + esc(p.url) + '"><figcaption>' + esc(RL.KIND[p.kind]) + '</figcaption></figure>'; }).join(""); }
+function sheet(d){
+  return RL.SHEET.map(function(s){
+    var rows = [];
+    s.f.forEach(function(f){
+      if (f.h || f.ph) return;
+      if (f.tbl) f.rows.forEach(function(r){ rows.push([r[1], val(d, r[0])]); });
+      else if (f.tbl2) f.rows.forEach(function(r, i){ rows.push(["Mặt hàng " + (i + 1), val(d, r[0]) + (val(d, r[1]) ? " · Khác biệt: " + val(d, r[1]) : "")]); });
+      else if (f.score){ f.score.forEach(function(x){ rows.push([x[1] + " (tối đa " + RL.num(x[2].toFixed(1)) + ")", num(val(d, x[0]))]); }); rows.push(["Tổng (tối đa 10,0)", num(val(d, "i_tong"))]); }
+      else if (f.t === "fix") rows.push([f.l, f.v]);
+      else rows.push([f.l, val(d, f.k)]);
+    });
+    if (s.id === "A") rows.splice(2, 0, ["Ngành hàng", RL.PROD[d.sp] || ""]);
+    return '<h3 class="sec">' + esc(s.t) + '</h3><table class="sheet"><tbody>' + rows.map(function(r){ return "<tr><td>" + esc(r[0]) + "</td><td>" + esc(r[1] || "…") + "</td></tr>"; }).join("") + '</tbody></table>';
+  }).join("");
+}
 function detail(no){
   var r = ROWS.filter(function(x){ return x.group_no === no; })[0]; if (!r) return;
-  var d = r.data || {}, m = mainPhoto(d), name = t(d, "ten") || RL.PROD[r.product] || "Chưa đặt tên";
-  $("dTitle").textContent = "Nhóm " + no + " · " + name;
-  var bb = ["Trong: " + (t(d, "n_bb1") || "…"), "Ngoài: " + (t(d, "n_bb2") || "…"), "Vận chuyển: " + (t(d, "n_bb3") || "…")].join("; ");
-  var rows = [["Lợi ích cốt lõi","o_cot",t(d,"n_cot"),"cot"],["Sản phẩm thực tế","o_thuc",t(d,"n_thuc"),"thuc"],["Sản phẩm gia tăng","o_gt",t(d,"n_gt"),"gt"],["Các lớp bao bì","o_bb",bb,"bb"]];
-  var others = photos(d).filter(function(p){ return p !== m && p.slot === "look"; });
+  var d = r.data || {}, m = mainPhoto(d), name = t(d, "a_ten") || "Chưa đặt tên";
+  $("dTitle").textContent = "Nhóm " + no + " · " + (RL.PROD[r.product] || "") + " · " + name;
+  var others = photos(d).filter(function(p){ return p !== m; });
   $("dBody").innerHTML = '<div class="d-body"><div class="d-vis">'
     + (m ? '<img class="main" alt="' + esc(RL.KIND[m.kind]) + '" src="' + esc(m.url) + '"><div><span class="tag">' + esc(RL.KIND[m.kind]) + '</span></div>' : "")
-    + '<h2 style="color:#0A2463;margin:6px 0 0">' + esc(name) + '</h2>' + (t(d, "thongdiep") ? '<p><i>“' + esc(t(d, "thongdiep")) + '”</i></p>' : "")
+    + '<h2 style="color:#0A2463;margin:6px 0 0">' + esc(name) + '</h2>' + (t(d, "h_thongdiep") ? '<p class="pitch">“' + esc(t(d, "h_thongdiep")) + '”</p>' : "")
     + (others.length ? '<div class="strip">' + thumbs(others) + '</div>' : "")
-    + (t(d, "prompt") ? '<p style="text-align:left;font-size:.9rem;white-space:pre-wrap;border:1px solid #D5DBE5;border-radius:8px;padding:8px"><b>Câu lệnh nhóm dùng với AI:</b> ' + esc(t(d, "prompt")) + '</p>' : "")
-    + (t(d, "camket") ? '<p style="text-align:left"><b>Cam kết bền vững:</b> ' + esc(t(d, "camket")) + '</p>' : "")
-    + '</div><div><div class="diag"><b>Tái sinh từ:</b> ' + esc(RL.PROD[r.product] || "…") + ' · <b>Giai đoạn PLC:</b> ' + esc(RL.PLC[d.plc] || "…") + '<br><b>Nỗi đau lớn nhất:</b> ' + esc(t(d, "noidau") || "…") + '</div>'
-    + '<table><thead><tr><th>Cấp độ</th><th>Hiện trạng cũ</th><th>Ý tưởng cải tiến mới</th></tr></thead><tbody>'
-    + rows.map(function(x){ var ph = photos(d, x[3]); return "<tr><td>" + x[0] + "</td><td>" + esc(t(d, x[1]) || "…") + "</td><td>" + esc(x[2] || "…")
-        + (ph.length ? '<div class="mini">' + ph.map(function(p){ return '<img alt="' + esc(RL.KIND[p.kind]) + '" title="' + esc(RL.KIND[p.kind]) + '" src="' + esc(p.url) + '">'; }).join("") + "</div>" : "") + "</td></tr>"; }).join("")
-    + '</tbody></table><div class="pitch"><b>Thuyết minh 90 giây</b><ol><li>' + esc(t(d, "pitch1") || "…") + '</li><li>' + esc(t(d, "pitch2") || "…") + '</li><li>' + esc(t(d, "pitch3") || "…") + '</li></ol></div>'
-    + (t(d, "dasua") ? '<div class="dec"><b>Chúng em đã sửa:</b> ' + esc(t(d, "dasua")) + '</div>' : "")
-    + '<div class="dec key"><b>Chúng em không làm theo AI:</b> ' + esc(t(d, "khongtheo") || "(nhóm chưa ghi)") + '</div>'
-    + '<p style="font-size:.8rem;color:#4A5568">Công ty CP Nước giải khát FreshUp · Dự án RE-FRESH 2026 · Dữ liệu giả lập</p></div></div>';
+    + (t(d, "g_prompt") ? '<p style="text-align:left;font-size:.85rem;white-space:pre-wrap;border:1px solid #D5DBE5;border-radius:4px;padding:8px"><b>Prompt chính nhóm dùng:</b> ' + esc(t(d, "g_prompt")) + '</p>' : "")
+    + '<p class="note">' + esc(RL.NOTE) + '</p>'
+    + '</div><div>' + sheet(d) + '</div></div>';
 }
 $("main").addEventListener("click", function(e){
   var c = e.target.closest(".card"); if (!c) return;
@@ -181,13 +193,13 @@ $("main").addEventListener("click", function(e){
 $("dClose").onclick = function(){ $("dlg").close(); };
 $("dlg").addEventListener("close", function(){ openNo = 0; resetTimer(); });
 
-var tLeft = 90, tId = null;
+var tLeft = 60, tId = null;
 function tShow(){ $("tOut").textContent = tLeft > 0 ? Math.floor(tLeft / 60) + ":" + ("0" + tLeft % 60).slice(-2) : "Hết giờ"; $("timer").classList.toggle("over", tLeft <= 10); }
-function resetTimer(){ clearInterval(tId); tId = null; tLeft = 90; tShow(); $("tBtn").textContent = "Bấm giờ 90 giây"; }
+function resetTimer(){ clearInterval(tId); tId = null; tLeft = 60; tShow(); $("tBtn").textContent = "Bấm giờ 60 giây"; }
 $("tBtn").onclick = function(){
   if (tId) return resetTimer();
   this.textContent = "Dừng / đặt lại";
-  tId = setInterval(function(){ tLeft--; tShow(); if (tLeft <= 0){ clearInterval(tId); tId = null; $("tBtn").textContent = "Bấm giờ 90 giây"; } }, 1000);
+  tId = setInterval(function(){ tLeft--; tShow(); if (tLeft <= 0){ clearInterval(tId); tId = null; $("tBtn").textContent = "Bấm giờ 60 giây"; } }, 1000);
 };
 
 function live(cls, txt){ var l = $("live"); l.className = "live " + cls; l.textContent = txt; }

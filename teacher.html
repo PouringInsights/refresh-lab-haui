@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Giảng viên · RE-FRESH Lab</title>
+<title>Giảng viên · Phiếu thiết kế sản phẩm</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800&display=swap">
 <style>
@@ -46,7 +46,7 @@ input:focus{border-color:var(--navy)}
 </style>
 </head>
 <body>
-<header><h1><span>RE-FRESH Lab</span> · Trang giảng viên</h1></header>
+<header><h1><span>Phiếu thiết kế sản phẩm</span> · Trang giảng viên</h1></header>
 <main>
   <div class="card">
     <h2>1. Mã lớp</h2>
@@ -55,15 +55,15 @@ input:focus{border-color:var(--navy)}
     <div class="row"><button class="btn" id="gen" type="button">Tạo mã mới</button><button class="btn p" id="show" type="button">Hiện mã QR</button></div>
     <p class="note">Mỗi lớp hoặc mỗi buổi dùng một mã riêng. Bài của các nhóm được lưu theo mã này.</p>
     <h2 style="margin-top:16px">2. Mở cho lớp</h2>
-    <div class="row"><a class="btn y" id="wall" target="_blank" rel="noopener">Mở tường triển lãm</a><a class="btn" id="stu" target="_blank" rel="noopener">Mở trang sinh viên</a><button class="btn" id="copy" type="button">Sao chép link</button></div>
+    <div class="row"><a class="btn y" id="wall" target="_blank" rel="noopener">Mở tường sản phẩm</a><a class="btn" id="stu" target="_blank" rel="noopener">Mở trang sinh viên</a><button class="btn" id="copy" type="button">Sao chép link</button></div>
     <p class="note" id="cntP">Nhóm đã gửi bài: <span id="cnt">0</span></p>
     <h2 style="margin-top:16px">Ghi nhớ</h2>
     <ol class="note">
-      <li>Sinh viên quét QR, chọn số nhóm một lần, làm 4 bước; bài tự lưu lên lớp (biểu tượng “Đã lưu lên lớp ✓”).</li>
-      <li>Phút 0–6 không dùng AI; AI chỉ phản hồi sau khi nhóm đã có ý tưởng.</li>
-      <li>Ảnh: chụp phác thảo trên giấy hoặc tải ảnh AI tạo; không chụp mặt người, không dùng logo thật.</li>
+      <li>Sinh viên quét QR, chọn số nhóm một lần (nhóm 1 Trà trái cây, 2 Mỹ phẩm, 3 Bánh trung thu, 4 Cà phê hòa tan; nhóm 5–8 tự chọn ngành hàng), điền phiếu A–I theo 4 bước; bài tự lưu lên lớp (“Đã lưu lên lớp ✓”).</li>
+      <li>30 phút: phân công 3 · sáng tạo ý tưởng và tạo ảnh bằng ChatGPT 12 · phân tích, đối chiếu khái niệm 10 · gửi ảnh và nộp phiếu 5. Trình bày 60 giây.</li>
+      <li>Sinh viên tự viết prompt trên ChatGPT; trang không gợi ý nội dung. Ảnh AI chỉ minh họa ý tưởng, không chứng minh tính khả thi hay nhu cầu thị trường.</li>
+      <li>Không logo hay thương hiệu thật, không ảnh người thật.</li>
       <li>Không có mạng: sinh viên chọn “Làm ngoại tuyến”, hoặc giảng viên mở bản dự phòng một tệp trên máy chiếu.</li>
-      <li>Mọi số liệu FreshUp là Dữ liệu giả lập.</li>
     </ol>
   </div>
   <div class="card qr">
